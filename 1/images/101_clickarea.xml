@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+'*	101_clickarea.xml
+'*	Copyright (c) Websoft, 2007.  All rights reserved.
+-->
+<params>
+	<object>
+		<label>Click area:</label>
+		<width>200</width>
+		<height>100</height>
+		<description>Rectangular click area with highlighting</description>
+	</object>
+	<page name="Highlight" w="240" h="200">
+		<param type="edit" id="hidden.label" text="" def="Click area:" x="10" y="-50" w="110" h="13"/>
+		<param type="line" x="10" y="22" w="220" h="22"/>
+		<param type="label" text="" def="" x="10" y="-50" w="1" h="13"/>
+		<param type="check" id="blink" text="Blinking" def="no" x="10" y="9" w="220" h="13">
+			<events>
+				<event name="check" target="lab_timer" action="enable"/>
+				<event name="check" target="timer" action="enable"/>
+				<event name="check" target="lab_timer2" action="enable"/>
+				<event name="uncheck" target="lab_timer" action="disable"/>
+				<event name="uncheck" target="timer" action="disable"/>
+				<event name="uncheck" target="lab_timer2" action="disable"/>
+			</events>
+		</param>
+		<param type="label" id="lab_timer" text="Blink period:" x="15" y="28" w="95" h="13"/>
+		<param type="edit" id="timer" text="" def="0.5" x="110" y="27" w="25" h="13"/>
+		<param type="label" id="lab_timer2" text="sec." x="138" y="28" w="60" h="13"/>
+		<param type="label" id="lab_opacity" text="Opacity:" x="10" y="50" w="100" h="13"/>
+		<param type="edit" id="opacity" text="" def="40" x="110" y="49" w="20" h="13"/>
+		<param type="label" id="lab_opacity2" text="%" x="133" y="50" w="60" h="13"/>
+		<param type="label" id="lab_bgcolor" text="Fill color:" x="10" y="67" w="100" h="13"/>
+		<param type="color" id="bgcolor" text="" def="#FF9900" x="110" y="66" w="40" h="13"/>
+		<param type="label" id="lab_borderstyle" text="Border style:" x="10" y="84" w="100" h="13"/>
+		<param type="select" id="borderstyle" text="" def="none" x="110" y="83" w="110" h="13">
+			<items>
+				<item id="none" label="no border">
+					<events>
+						<event name="selendok" target="lab_bordercolor" action="disable"/>
+						<event name="selendok" target="bordercolor" action="disable"/>
+						<event name="selendok" target="lab_borderwidth" action="disable"/>
+						<event name="selendok" target="borderwidth" action="disable"/>
+						<event name="selendok" target="lab_borderwidth2" action="disable"/>
+						<event name="selend" target="lab_bordercolor" action="enable"/>
+						<event name="selend" target="bordercolor" action="enable"/>
+						<event name="selend" target="lab_borderwidth" action="enable"/>
+						<event name="selend" target="borderwidth" action="enable"/>
+						<event name="selend" target="lab_borderwidth2" action="enable"/>
+					</events>
+				</item>
+				<item id="solid" label="solid"/>
+				<item id="double" label="double"/>
+				<item id="inset" label="inset"/>
+				<item id="outset" label="outset"/>
+				<item id="ridge" label="ridge"/>
+				<item id="groove" label="groove"/>
+				<item id="dashed" label="dashed"/>
+				<item id="dotted" label="dotted"/>
+			</items>
+		</param>
+		<param type="label" id="lab_bordercolor" text="Border color:" x="10" y="101" w="100" h="13"/>
+		<param type="color" id="bordercolor" text="" def="#CC6600" x="110" y="100" w="40" h="13"/>
+		<param type="label" id="lab_borderwidth" text="Border width:" x="10" y="118" w="100" h="13"/>
+		<param type="edit" id="borderwidth" text="" def="2" x="110" y="117" w="18" h="13"/>
+		<param type="label" id="lab_borderwidth2" text="px" x="130" y="118" w="60" h="13"/>
+		<param type="check" id="preview" text="Preview in Edit mode" def="no" x="10" y="135" w="220" h="13">
+			<events>
+				<event name="check" target="lab_line_txt" action="show"/>
+				<event name="check" target="lab_txt1" action="show"/>
+				<event name="check" target="lab_txt2" action="show"/>
+				<event name="uncheck" target="lab_line_txt" action="hide"/>
+				<event name="uncheck" target="lab_txt1" action="hide"/>
+				<event name="uncheck" target="lab_txt2" action="hide"/>
+			</events>
+		</param>
+		<param type="line" id="lab_line_txt" x="10" y="148" w="220" h="34"/>
+		<param type="label" id="lab_txt1" text="LIMITATION: Opacity cannot be applied while previewing in Edit mode" x="20" y="156" w="200" h="24"/>
+		<param type="label" id="lab_txt2" text="" x="20" y="-50" w="1" h="13"/>
+	</page>
+	<methods>
+		<method name="Constructor" label="_Constructor" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[function Constructor(argobj)
+			{
+				if(argobj.pid==null) return false;
+				var oCurObj = document.getElementById(argobj.pid);
+				if(oCurObj==null) return false;
+				oCurObj.setAttribute("highlighted","0");
+				oCurObj.setAttribute("active","0");
+				if(!g_isMSIE)
+				{
+					var oHighlighted = document.getElementById(argobj.pid + "_HIGHLIGHT");
+					oHighlighted.style.width = oHighlighted.getAttribute("ww3c");
+					oHighlighted.style.height = oHighlighted.getAttribute("hw3c");
+				}
+				if(oCurObj.getAttribute("onclick")==null) oCurObj.style.cursor = "default";
+				return true;
+			}]]>
+			</body>
+		</method>
+		<method name="HighlightOn" label="HIGHLIGHT ON" access="public">
+			<params>
+			</params>
+			<body>
+				<![CDATA[function HighlightOn(argobj)
+			{
+				if(argobj.pid==null) return false;
+				var oCurObj = document.getElementById(argobj.pid);
+				if(oCurObj==null) return false;
+				if(oCurObj.style.display=="none" || oCurObj.getAttribute("active")=="1" || oCurObj.getAttribute("highlighted")!="0") return false;
+				oCurObj.setAttribute("active","1");
+				var oParams = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+				if(oParams==null) return false;
+				var oEmpty = document.getElementById(argobj.pid + "_EMPTYAREA");
+				var oHighlighted = document.getElementById(argobj.pid + "_HIGHLIGHT");
+				if(oEmpty==null || oHighlighted==null) return false;
+				if(oCurObj.getAttribute("highlighted")!="1")
+				{
+					oEmpty.setAttribute("cl-hide", "1");
+					//oEmpty.style.display = "none";
+					oHighlighted.style.display = "";
+					if(oParams.selectSingleNode("blink").text=="yes")
+					{
+						var sDelay = oParams.selectSingleNode("timer").text;
+						var nDelay = parseFloat(sDelay);
+						if(isNaN(nDelay)) nDelay = 1;
+						TransitionBlink({ targetid: argobj.pid + "_HIGHLIGHT", delay: nDelay });
+					}
+					oCurObj.setAttribute("highlighted","1");
+				}
+				return true;
+			}]]>
+			</body>
+		</method>
+		<method name="HighlightOff" label="HIGHLIGHT OFF" access="public">
+			<params>
+			</params>
+			<body>
+				<![CDATA[function HighlightOff(argobj)
+			{
+				if(argobj.pid==null) return false;
+				var oCurObj = document.getElementById(argobj.pid);
+				if(oCurObj==null) return false;
+				if(oCurObj.style.display=="none") return false;
+				oCurObj.setAttribute("active","0");
+				var oParams = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+				if(oParams==null) return false;
+				var oEmpty = document.getElementById(argobj.pid + "_EMPTYAREA");
+				var oHighlighted = document.getElementById(argobj.pid + "_HIGHLIGHT");
+				if(oEmpty==null || oHighlighted==null) return false;
+				//if(oEmpty.style.display=="none")
+				if(oEmpty.getAttribute("cl-hide")=="1")
+				{
+					oEmpty.setAttribute("cl-hide", "0");
+					oHighlighted.style.display = "none";
+					//oEmpty.style.display = "";
+					oCurObj.setAttribute("highlighted","0");
+					if(oParams.selectSingleNode("blink").text=="yes") ClearTransitionBlink(argobj.pid);
+				}
+				return true;
+			}]]>
+			</body>
+		</method>
+	</methods>
+</params>

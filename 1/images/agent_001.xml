@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+'*	agent_001.xml
+'*	
+-->
+<params>
+	<object>
+		<format>2.0</format>
+		<label>Animated agent</label>
+		<description>Simple animated agent</description>
+		<width>200</width>
+		<height>200</height>
+	</object>
+	<page name="Parameters" w="240" h="120">
+		<param type="edit" id="hidden_security_alert" text="" def="Flash Player security settings are too strict to manage Agent actions. Please add module address into Trusted Locations section of Flash Player security settings." x="0" y="-50" w="1" h="1"/>
+		<param type="label" id="" text="Character:" def="" x="10" y="10" w="110" h="13"/>
+		<param type="select" id="agent" text="" def="wiseguy" x="120" y="9" w="110" h="13">
+			<items>
+				<item id="wiseguy" label="Wise Guy"/>
+				<item id="wisegirl" label="Wise Girl"/>
+			</items>
+		</param>
+		<param type="label" id="" text="Display mode:" def="" x="10" y="26" w="110" h="13"/>
+		<param type="select" id="wmode" text="" def="transparent" x="120" y="25" w="110" h="13">
+			<items>
+				<item id="transparent" label="Transparent layer">
+					<events>
+						<event name="selendok" target="bgcolor_label" action="disable"/>
+						<event name="selendok" target="bgcolor" action="disable"/>
+					</events>
+				</item>
+				<item id="window" label="Opaque, on top of all layers">
+					<events>
+						<event name="selendok" target="bgcolor_label" action="enable"/>
+						<event name="selendok" target="bgcolor" action="enable"/>
+					</events>
+				</item>
+				<item id="opaque" label="Opaque layer">
+					<events>
+						<event name="selendok" target="bgcolor_label" action="enable"/>
+						<event name="selendok" target="bgcolor" action="enable"/>
+					</events>
+				</item>
+			</items>
+		</param>
+		<param type="label" id="bgcolor_label" text="Background color:" def="" x="10" y="42" w="110" h="13"/>
+		<param type="color" id="bgcolor" text="" def="#FFFFFF" x="120" y="41" w="45" h="13"/>
+		<param type="check" id="security_alert" text="Warn if Flash Player security settings are too strict" def="yes" x="10" y="57" w="220" h="13"/>
+		<param type="check" id="https" text="Use HTTPS in codebase attribute" def="yes" x="10" y="73" w="220" h="13"/>
+	</page>
+	<methods>
+		<method name="Constructor" label="_Constructor" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[function Constructor(argobj)
+			{
+				if(argobj.pid==null) return false;
+				var oCurObj = document.getElementById(argobj.pid);
+				if(oCurObj==null) return false;
+				var oContainer = document.getElementById(argobj.pid + "_CONTAINER");
+				if(oContainer==null) return false;
+				var oFPlayer;
+				var sFPlayerID;
+				if(g_isMSIE)
+				{
+					oFPlayer = document.getElementById(argobj.pid + "_FPOBJECT_W3C");
+					oContainer.removeChild(oFPlayer);
+					oFPlayer.style.display = "none";
+					sFPlayerID = argobj.pid + "_FPOBJECT_IE";
+					oFPlayer = document.getElementById(sFPlayerID);
+				}
+				else
+				{
+					oFPlayer = document.getElementById(argobj.pid + "_FPOBJECT_IE");
+					oContainer.removeChild(oFPlayer);
+					oFPlayer.style.display = "none";
+					sFPlayerID = argobj.pid + "_FPOBJECT_W3C";
+					oFPlayer = document.getElementById(sFPlayerID);
+				}
+				oCurObj.setAttribute("fpid", sFPlayerID);
+				oCurObj.setAttribute("laststate", "idle");
+				return true;
+			}]]>
+			</body>
+		</method>
+		<method name="EIHandler" label="_EIHandler" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[function EIHandler(argobj)
+			{
+				if(argobj.pid==null || argobj.action==null || argobj.evt==null) return false;
+				var oCurObj = document.getElementById(argobj.pid);
+				if(oCurObj==null) return false;
+				if(argobj.action=="idle" && argobj.evt=="start" && oCurObj.getAttribute("cl-ready")==null)
+				{
+					oCurObj.setAttribute("cl-ready", "1");
+					FireEvent(argobj.pid, "onReady");
+					var sDefer = oCurObj.getAttribute("cl-defer");
+					if(sDefer!=null)
+					{
+						var aDeferred = sDefer.split("[.]");
+						var aArgs;
+						for(var i=0; i<aDeferred.length; i++)
+						{
+							aArgs = aDeferred[i].split(";");
+							CallMethod("agent_001", "PerformAction", { pid: argobj.pid, action: aArgs[0], autoreturn: aArgs[1], override: aArgs[2] });
+						}
+					}
+				}
+				if(argobj.evt=="end")
+				{
+					oCurObj.setAttribute("laststate", argobj.action);
+					FireEvent(argobj.pid, "onActionEnd");
+				}
+				return true;
+			}]]>
+			</body>
+		</method>
+		<method name="PerformAction" label="PERFORM ACTION" access="public">
+			<params>
+				<param name="action" label="Action">
+					<items>
+						<item id="idle" label="Idle"/>
+						<item id="talk" label="Talk"/>
+						<item id="think" label="Think"/>
+						<item id="scratch" label="Scratch the head"/>
+						<item id="helpless" label="Helpless"/>
+						<item id="smile" label="Smile"/>
+						<item id="sceptic" label="Doubt"/>
+						<item id="astonish" label="Wonder"/>
+						<item id="cry" label="Cry"/>
+						<item id="indign" label="Become indignant"/>
+						<item id="sleep" label="Sleep"/>
+						<item id="yawn" label="Yawn *"/>
+						<item id="yes_nod" label="Agree *"/>
+						<item id="no_nod" label="Disagree *"/>
+						<item id="finger_up" label="Point to the top"/>
+						<item id="finger_down" label="Point to the bottom"/>
+						<item id="finger_right" label="Point to the right"/>
+						<item id="finger_left" label="Point to the left"/>
+						<item id="notice" label="Attention"/>
+						<item id="thumb_up" label="Approve"/>
+						<item id="applause" label="Applaud"/>
+						<item id="headknock" label="Are you a fool?"/>
+						<item id="fist" label="Threaten"/>
+						<item id="note" label="Write a note"/>
+						<item id="read" label="Read book"/>
+						<item id="look_up" label="Look up"/>
+						<item id="look_down" label="Look down"/>
+						<item id="look_left" label="Look left"/>
+						<item id="look_right" label="Look right"/>
+						<item id="binocular" label="Binocular"/>
+						<item id="turn_left" label="Turn left"/>
+						<item id="turn_right" label="Turn right"/>
+						<item id="walk_left" label="Walk left"/>
+						<item id="walk_right" label="Walk right"/>
+						<item id="glass" label="Knock-knock"/>
+					</items>
+				</param>
+				<param name="autoreturn" label="Return">
+					<items>
+						<item id="no" label="Wait for action"/>
+						<item id="yes" label="Automatic return"/>
+					</items>
+				</param>
+				<param name="override" label="Priority">
+					<items>
+						<item id="no" label="At the end of the queue"/>
+						<item id="yes" label="Override queue"/>
+					</items>
+				</param>
+			</params>
+			<body>
+				<![CDATA[function PerformAction(argobj)
+			{
+				if(argobj.pid==null) return false;
+				if(argobj.action==null) return false;
+				var oCurObj = document.getElementById(argobj.pid);
+				if(oCurObj==null) return false;
+				if(oCurObj.getAttribute("cl-ready")==null)
+				{
+					var sDefer = (oCurObj.getAttribute("cl-defer")==null) ? "" : oCurObj.getAttribute("cl-defer") + "[.]";
+					oCurObj.setAttribute("cl-defer", sDefer + argobj.action + ";" + ((argobj.autoreturn=="yes") ? "yes" : "no") + ";" + ((argobj.override=="yes") ? "yes" : "no"));
+					return false;
+				}
+				var oParams = g_oParams.selectSingleNode("./param[@objectid='" + argobj.pid + "']");
+				if(oParams==null) return false;
+				var oFPlayer = document.getElementById(oCurObj.getAttribute("fpid"));
+				if(oFPlayer==null) return false; 
+				try
+				{
+					oFPlayer.Action(argobj.action, ((argobj.autoreturn=="yes") ? "yes" : "no"), ((argobj.override=="yes") ? "yes" : "no"));
+				}
+				catch(x1)
+				{
+					try
+					{
+						oFPlayer.CallFunction("<invoke name=\"Action\" returntype=\"string\"><arguments><string>" + argobj.action + "</string><string>" + ((argobj.autoreturn=="yes") ? "yes" : "no") + "</string><string>" + ((argobj.override=="yes") ? "yes" : "no") + "</string></arguments></invoke>");
+					}
+					catch(x2)
+					{
+						if(oParams.selectSingleNode("security_alert").text=="yes")	alert(oParams.selectSingleNode("hidden_security_alert").text);
+					}
+				}
+				return true;
+			}]]>
+			</body>
+		</method>
+		<method name="Return" label="IDLE" access="public">
+			<params>
+				<param name="override" label="Priority">
+					<items>
+						<item id="no" label="At the end of the queue"/>
+						<item id="yes" label="Override queue"/>
+					</items>
+				</param>
+			</params>
+			<body>
+				<![CDATA[function Return(argobj)
+			{
+				if(argobj.pid==null) return false;
+				var oCurObj = document.getElementById(argobj.pid);
+				if(oCurObj==null) return false;
+				if(oCurObj.getAttribute("cl-ready")==null) 
+				{
+					var sDefer = (oCurObj.getAttribute("cl-defer")==null) ? "" : oCurObj.getAttribute("cl-defer") + "[.]";
+					oCurObj.setAttribute("cl-defer", sDefer + "idle;no;" + ((argobj.override=="yes") ? "yes" : "no"));
+					return false;
+				}
+				CallMethod("agent_001", "PerformAction", { pid: argobj.pid, action: "idle", autoreturn: "no", override: ((argobj.override=="yes") ? "yes" : "no") });
+				return true;
+			}]]>
+			</body>
+		</method>
+		<method name="GetProperty" label="_GetProperty" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[function GetProperty(argobj)
+			{
+				if(argobj.pid==null || argobj.property==null) return false;
+				var oCurObj = document.getElementById(argobj.pid);
+				if(oCurObj==null) return false;
+				if(oCurObj.getAttribute("cl-ready")==null) return false;
+				var oParams = g_oParams.selectSingleNode("./param[@objectid='" + argobj.pid + "']");
+				if(oParams==null) return false;
+				var sPlayerID = oCurObj.getAttribute("fpid");
+				if(sPlayerID==null) return false;
+				var oFPlayer = document.getElementById(sPlayerID);
+				if(oFPlayer==null) return false;
+				switch(argobj.property.toLowerCase())
+				{
+					case "laststate":
+					{
+						g_vPropertyValue = oCurObj.getAttribute("laststate");
+						break;
+					}
+					case "curstate":
+					{
+						var sState = "idle";
+						g_vPropertyValue = sState;
+						try
+						{
+							sState = oFPlayer.GetState();
+						}
+						catch(x1)
+						{
+							try
+							{
+								sState = oFPlayer.CallFunction("<invoke name=\"GetState\" returntype=\"string\"><arguments></arguments></invoke>");
+							}
+							catch(x2)
+							{
+								break;	
+							}
+						}
+						if(sState.indexOf("<string>")!=-1 && sState.lastIndexOf("</string>")!=-1)
+						{
+							sState = sState.substr(8);
+							sState = sState.substring(0, sState.lastIndexOf("</string>"));
+						}
+						g_vPropertyValue = sState;
+						break;
+					}
+					case "queue":
+					{
+						var sFIFO = "";
+						g_vPropertyValue = sFIFO;
+						try
+						{
+							sFIFO = oFPlayer.GetQueue();
+						}
+						catch(x1)
+						{
+							try
+							{
+								sFIFO = oFPlayer.CallFunction("<invoke name=\"GetQueue\" returntype=\"string\"><arguments></arguments></invoke>");
+							}
+							catch(x2)
+							{
+								break;
+							}
+						}
+						if(sFIFO.indexOf("<string>")!=-1 && sFIFO.lastIndexOf("</string>")!=-1)
+						{
+							sFIFO = sFIFO.substr(8);
+							sFIFO = sFIFO.substring(0, sFIFO.lastIndexOf("</string>"));
+						}
+						g_vPropertyValue = sFIFO;
+						break;
+					}
+				}
+				return true;
+			}]]>
+			</body>
+		</method>
+		<method name="ShowAgent" label="_ShowAgent" access="private">
+			<params>
+				<param name="transition" label="Transition">
+					<items>
+						<item id="-1" label="No transition"/>
+						<item id="0" label="Box in"/>
+						<item id="1" label="Box out"/>
+						<item id="2" label="Circle in"/>
+						<item id="3" label="Circle out"/>
+						<item id="4" label="Wipe up"/>
+						<item id="5" label="Wipe down"/>
+						<item id="6" label="Wipe right"/>
+						<item id="7" label="Wipe left"/>
+						<item id="8" label="Vertical blinds"/>
+						<item id="9" label="Horizontal blinds"/>
+						<item id="10" label="Checkerboard across"/>
+						<item id="11" label="Checkerboard down"/>
+						<item id="12" label="Random dissolve"/>
+						<item id="13" label="Split vertical in"/>
+						<item id="14" label="Split vertical out"/>
+						<item id="15" label="Split horizontal in"/>
+						<item id="16" label="Split horizontal out"/>
+						<item id="17" label="Strips left down"/>
+						<item id="18" label="Strips left up"/>
+						<item id="19" label="Strips right down"/>
+						<item id="20" label="Strips right up"/>
+						<item id="21" label="Random bars horizontal"/>
+						<item id="22" label="Random bars vertical"/>
+						<item id="23" label="Random"/>
+					</items>
+				</param>
+				<param name="duration" label="Duration"></param>
+			</params>
+			<body>
+				<![CDATA[function ShowAgent(argobj)
+			{
+				if(argobj.pid==null) return false;
+				var oCurObj = document.getElementById(argobj.pid);
+				if(oCurObj==null) return false;
+				var nDur = parseFloat(argobj.duration);
+				if(isNaN(nDur)) nDur = 1;
+				oCurObj.style.display = "";
+				if(argobj.x!=null || argobj.y!=null)
+				{
+					var iX = parseInt(argobj.x, 10);
+					var iY = parseInt(argobj.y, 10);
+					if(!isNaN(iX)) oCurObj.style.left = iX + "px";
+					if(!isNaN(iY)) oCurObj.style.top = iY + "px";
+				}
+				if(argobj.transition==-1 || nDur<=0)
+				{
+					oCurObj.style.visibility = "visible";
+					return true;
+				}
+				if(g_isMSIE && !g_isMSIE11 (oCurObj.filters!=null))
+				{
+					oCurObj.style.filter = "RevealTrans(duration=" + nDur + ", transition=" + argobj.transition + ")";
+					oCurObj.style.visibility = "hidden";
+					if(oCurObj.filters[0]!=null)
+					{
+						oCurObj.filters[0].Apply();
+						oCurObj.style.visibility = "visible";
+						oCurObj.filters[0].Play();
+					}
+					else
+					{
+						oCurObj.style.visibility = "visible";
+					}
+				}
+				else
+				{
+					ProcessFFTranIn({ targetid: argobj.pid, transtype: argobj.transition, transdur: nDur });
+				}
+				return true;
+			}]]>
+			</body>
+		</method>
+		<method name="HideAgent" label="_HideAgent" access="private">
+			<params>
+				<param name="transition" label="Transition">
+					<items>
+						<item id="0" label="Box in"/>
+						<item id="1" label="Box out"/>
+						<item id="2" label="Circle in"/>
+						<item id="3" label="Circle out"/>
+						<item id="4" label="Wipe up"/>
+						<item id="5" label="Wipe down"/>
+						<item id="6" label="Wipe right"/>
+						<item id="7" label="Wipe left"/>
+						<item id="8" label="Vertical blinds"/>
+						<item id="9" label="Horizontal blinds"/>
+						<item id="10" label="Checkerboard across"/>
+						<item id="11" label="Checkerboard down"/>
+						<item id="12" label="Random dissolve"/>
+						<item id="13" label="Split vertical in"/>
+						<item id="14" label="Split vertical out"/>
+						<item id="15" label="Split horizontal in"/>
+						<item id="16" label="Split horizontal out"/>
+						<item id="17" label="Strips left down"/>
+						<item id="18" label="Strips left up"/>
+						<item id="19" label="Strips right down"/>
+						<item id="20" label="Strips right up"/>
+						<item id="21" label="Random bars horizontal"/>
+						<item id="22" label="Random bars vertical"/>
+						<item id="23" label="Random"/>
+					</items>
+				</param>
+				<param name="duration" label="Duration"></param>
+			</params>
+			<body>
+				<![CDATA[function HideAgent(argobj)
+			{
+				if(argobj.pid==null) return false;
+				var oCurObj = document.getElementById(argobj.pid);
+				if(oCurObj==null) return false;
+				var nDur = parseFloat(argobj.duration);
+				if(isNaN(nDur)) nDur = 1;
+				oCurObj.style.display = "";
+				if(argobj.transition==-1 || nDur<=0)
+				{
+					oCurObj.style.visibility = "visible";
+					return true;
+				}
+				if(g_isMSIE && !g_isMSIE11 && (oCurObj.filters!=null))
+				{
+					oCurObj.style.filter = "RevealTrans(duration=" + nDur + ", transition=" + argobj.transition + ")";
+					oCurObj.style.visibility = "visible";
+					if(oCurObj.filters[0]!=null)
+					{
+						oCurObj.filters[0].Apply();
+						oCurObj.style.visibility = "hidden";
+						oCurObj.filters[0].Play();
+					}
+					else
+					{
+						oCurObj.style.visibility = "hidden";
+					}
+				}
+				else
+				{
+					ProcessFFTranOut({ targetid: argobj.pid, transtype: argobj.transition, transdur: nDur });
+				}
+				return true;
+			}]]>
+			</body>
+		</method>
+		<method name="TeleportAgent" label="TELEPORT" access="public">
+			<params>
+				<param name="x" label="Destination X"></param>
+				<param name="y" label="Destination Y"></param>
+				<param name="duration" label="Duration"></param>
+			</params>
+			<body>
+				<![CDATA[function teleportAgent(argobj)
+			{
+				if(argobj.pid==null) return false;
+				var oCurObj = document.getElementById(argobj.pid);
+				var nDur = parseFloat(argobj.duration);
+				if(isNaN(nDur)) nDur = 1;
+				CallMethod("agent_001", "HideAgent", { pid: argobj.pid, transition: 12, duration: nDur});
+				var iDelay = Math.round(nDur*1000);
+				CreateTimeActionMethod("agent_001", "ShowAgent", null, iDelay, { pid: argobj.pid, transition: 12, duration: nDur, x: argobj.x, y: argobj.y });
+				return true;
+			}]]>
+			</body>
+		</method>
+	</methods>
+</params>

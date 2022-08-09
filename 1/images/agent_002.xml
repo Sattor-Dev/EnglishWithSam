@@ -1,0 +1,539 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+'*	agent_002.xml
+'*	Copyright (c) Websoft, 2006.  All rights reserved.
+-->
+<params>
+	<object>
+		<label>Talking Head</label>
+		<width>145</width>
+		<height>200</height>
+		<description>Animated Talking Head</description>
+	</object>
+    <page name=" Parameters " w="240" h="60">
+		<param type="label" text="Head:" x="10" y="10" w="110" h="13"/>
+		<param type="select" id="agent" def="womanhead" x="120" y="9" w="110" h="13">
+			<items>
+				<item id="womanhead" label="Businesswoman"/>
+				<item id="womanhead2" label="Girl"/>
+				<item id="manhead" label="Businessman"/>
+				<item id="grandfatherhead" label="Grandfather"/>
+				<item id="wiseguyhead" label="Wiseguy"/>
+			</items>
+		</param>
+		<param type="label" text="Display mode:" x="10" y="26" w="110" h="13"/>
+		<param type="select" id="wmode" def="transparent" x="120" y="25" w="110" h="13">
+			<items>
+				<item id="transparent" label="Transparent layer">
+					<events>
+						<event name="selendok" target="bgcolor_label" action="disable"/>
+						<event name="selendok" target="bgcolor" action="disable"/>
+					</events>
+				</item>
+				<item id="window" label="Opaque, on top of all layers">
+					<events>
+						<event name="selendok" target="bgcolor_label" action="enable"/>
+						<event name="selendok" target="bgcolor" action="enable"/>
+					</events>
+				</item>
+				<item id="opaque" label="Opaque layer">
+					<events>
+						<event name="selendok" target="bgcolor_label" action="enable"/>
+						<event name="selendok" target="bgcolor" action="enable"/>
+					</events>
+				</item>
+			</items>
+		</param>
+		<param type="label" id="bgcolor_label" text="Background color:" x="10" y="42" w="110" h="13"/>
+		<param type="color" id="bgcolor" text="#FFFFFF" def="#FFFFFF" x="120" y="41" w="45" h="13"/>
+	</page>
+	<methods>
+		<method name="Constructor" label="Constructor" access="private">
+			<params>
+			</params>
+			<body>
+			<![CDATA[
+				function Constructor(argobj) {
+					if(argobj.pid==null) return false;
+					if(document.getElementById(argobj.pid)==null) return false;
+					var curObj = document.getElementById(argobj.pid);
+					if(g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']")==null) return false;
+					var params = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+					var curagent = params.selectSingleNode("agent").firstChild.nodeValue;
+					curObj.setAttribute("state","idle");
+					curObj.setAttribute("free","1");
+					var a = new Object; a.pid = argobj.pid; a.action = "idle";
+					CallMethod("agent_002","InitAction", a);
+					return true;
+				}
+			]]>
+			</body>
+		</method>
+		<method name="InitAction" label="INIT ACTION" access="private">
+			<params>
+			</params>
+			<body>
+			<![CDATA[
+				function InitAction(argobj) {
+					if(argobj.pid==null) return false;
+					if(argobj.action==null) argobj.action = "idle";
+					if(document.getElementById(argobj.pid)==null) return false;
+					var curObj = document.getElementById(argobj.pid);
+					if(curObj.style.display=="none") return false;
+					var fpObj = g_isMSIE ? document.getElementById(argobj.pid+"_fpobj") : document.embeds[argobj.pid+"_fpobj"];
+					if(fpObj == null) return false;
+					try {
+						//fpObj.Stop();
+						fpObj.TGotoLabel("/",argobj.action+"_start");
+						fpObj.TPlay("/");
+						curObj.setAttribute("state",argobj.action);
+					} catch(e) {
+//						alert("ERROR:"+e.description);
+						return false;
+					}
+					return true;
+				}
+			]]>
+			</body>
+		</method>
+		<method name="PerformAction" label="ACTION">
+			<params>
+				<param name="action" label="Action">
+					<items>
+						<item id="idle" label="Idle"/>
+						<item id="yes_nod" label="Agree *"/>
+						<item id="no_nod" label="Disagree *"/>
+						<item id="talk" label="Talk"/>
+						<item id="speak_yes" label="Agree and talk"/>
+						<item id="speak_no" label="Disagree and talk"/>
+						<item id="angry" label="Become angry"/>
+						<item id="speak_angry" label="Shout"/>
+						<item id="astonish" label="Wonder"/>
+						<item id="amazement" label="Amazement"/>
+					</items>
+				</param>
+				<param name="autoreturn" label="Return to idle state" default="yes">
+					<items>
+						<item id="no" label="Wait for return action"/>
+						<item id="yes" label="Automatic"/>
+					</items>
+				</param>
+			</params>
+			<body>
+			<![CDATA[
+				function PerformAction(argobj) {
+					if(argobj.pid==null) return false;
+					if(argobj.action==null) return false;
+					if(document.getElementById(argobj.pid)==null) return false;
+					var curObj = document.getElementById(argobj.pid);
+					if(curObj.style.display=="none") return false;
+					if(curObj.getAttribute("state")==null) return false;
+					var curState = curObj.getAttribute("state");
+					if(curObj.getAttribute("fifo")==null) {
+						var fifo = new Array();
+					} else {
+						var fifo = curObj.getAttribute("fifo").split("~");
+					}
+					var a = new Object;
+					a.pid = argobj.pid;
+					if(fifo.length==0) {
+					//  Analyze state. 
+					//  If one of the basic actions - fill fifo with called sequence and start called action immediately
+					//  If state is return action or is single autoreturn action - fill fifo with called sequence and do nothing
+					//  If state requires return action - insert in fifo return action + called sequence and if free - start return action
+						switch(curState) {
+							case "idle":
+							case "speak_yes":
+							case "speak_no":
+							case "speak_angry":
+							case "talk":
+								pushArray(fifo,argobj.action);
+								if(argobj.autoreturn=="yes") {
+									switch(argobj.action) {
+										case "astonish":
+										case "amazement":
+											pushArray(fifo,argobj.action+"_return");
+											break;
+										default: break;
+									}
+								}
+								curObj.setAttribute("fifo",fifo.join("~"));
+								a.action = fifo[0];
+								CallMethod("agent_002","InitAction",a);
+								 // document.getElementById("agentFIFO").innerHTML = "FIFO: "+fifo.join(" ")+"<br>STATE: "+curObj.getAttribute("state");
+								return true;
+							case "yes_nod":
+							case "no_nod":
+								pushArray(fifo,argobj.action);
+								if(argobj.autoreturn=="yes") {
+									switch(argobj.action) {
+										case "astonish":
+										case "amazement":
+										case "angry":
+											pushArray(fifo,argobj.action+"_return");
+											break;
+										default: break;
+									}
+								}
+								curObj.setAttribute("fifo",fifo.join("~"));
+								 // document.getElementById("agentFIFO").innerHTML = "FIFO: "+fifo.join(" ")+"<br>STATE: "+curObj.getAttribute("state");
+								return true;
+							default:
+								if(curState.indexOf("_return")!=-1) {
+									pushArray(fifo,argobj.action);
+									if(argobj.autoreturn=="yes") {
+										switch(argobj.action) {
+											case "astonish":
+											case "amazement":
+											case "angry":
+												pushArray(fifo,argobj.action+"_return");
+												break;
+											default: break;
+										}
+									}
+									curObj.setAttribute("fifo",fifo.join("~"));
+									 // document.getElementById("agentFIFO").innerHTML = "FIFO: "+fifo.join(" ")+"<br>STATE: "+curObj.getAttribute("state");
+									return true;
+								} 
+								break;
+						}
+					
+						pushArray(fifo,curObj.getAttribute("state")+"_return");
+						pushArray(fifo,argobj.action);
+						if(fifo.length==0) {
+							curObj.removeAttribute("fifo");
+						} else {
+							curObj.setAttribute("fifo",fifo.join("~"));
+						}
+						 // document.getElementById("agentFIFO").innerHTML = "FIFO: "+fifo.join(" ")+"<br>STATE: "+curObj.getAttribute("state");
+						if(curObj.getAttribute("free")=="1") {
+							a.action = fifo[0];
+							 // document.getElementById("agentFIFO").innerHTML = "FIFO: "+fifo.join(" ")+"<br>STATE: "+curObj.getAttribute("state");
+							CallMethod("agent_002","InitAction",a);
+						}
+						return true;
+					} else {
+					// Add called action sequence to fifo and do nothing
+						if(argobj.action=="idle") return false;
+						pushArray(fifo,argobj.action);
+						if(argobj.autoreturn=="yes") {
+							switch(argobj.action) {
+								case "astonish":
+								case "amazement":
+								case "angry":
+									pushArray(fifo,argobj.action+"_return");
+									break;
+								default: break;
+							}
+						}
+						if(fifo.length==0) {
+							curObj.removeAttribute("fifo");
+						} else {
+							curObj.setAttribute("fifo",fifo.join("~"));
+						}
+						 // document.getElementById("agentFIFO").innerHTML = "FIFO: "+fifo.join(" ")+"<br>STATE: "+curObj.getAttribute("state");
+						return true;
+					}
+					return true;
+				}
+			]]>
+			</body>
+		</method>
+		<method name="Listener" label="LISTENER" access="private">
+			<params>
+			</params>
+			<body>
+			<![CDATA[
+				function Listener(argobj) {
+//					alert(argobj.pid+" "+argobj.action+" "+argobj.ev);
+					if(argobj.pid==null || argobj.action==null || argobj.ev==null) return false;
+					if(document.getElementById(argobj.pid)==null) return false;
+					var curObj = document.getElementById(argobj.pid);
+					if(curObj.style.display=="none") return false;
+					if(curObj.getAttribute("fifo")==null) {
+						var fifo = new Array();
+					} else {
+						var fifo = curObj.getAttribute("fifo").split("~");
+					}
+					var a = new Object;
+					a.pid = argobj.pid;
+					switch(argobj.ev) {
+						case "start": 
+						// If fifo is empty - do nothing - agent stays in the same state until end event
+						// If fifo is not empty - shift fifo 1 position to prepare next action (or no action)
+							curObj.setAttribute("state",argobj.action);
+							curObj.setAttribute("free","0");
+							// document.getElementById("agentFIFO").innerHTML = "FIFO: "+fifo.join(" ")+"<br>STATE: "+curObj.getAttribute("state");
+							if(fifo.length==0) return false;
+							if(fifo[0]==curObj.getAttribute("state")) shiftArray(fifo);
+							if(fifo.length==0) {
+								curObj.removeAttribute("fifo");
+							} else {
+								curObj.setAttribute("fifo",fifo.join("~"));
+							}
+							// document.getElementById("agentFIFO").innerHTML = "FIFO: "+fifo.join(" ")+"<br>STATE: "+curObj.getAttribute("state");
+							break;
+						case "end":
+						// If fifo is empty and state is one of basic actions - do nothing
+						// If fifo is empty and state is one of single autoreturn actions or is one of return actions - insert idle action in fifo and start idle action
+						// If fifo is empty and none above is true - do nothing - agent stays in the same state
+						// If fifo is not empty - get (but not shift - will be shifted at start event) fifo first item and start corresponding action
+							curObj.setAttribute("state",argobj.action);
+							FireEvent(argobj.pid, "onActionEnd");
+							if(document.getElementById(argobj.pid)==null) return false;
+							 // document.getElementById("agentFIFO").innerHTML = "FIFO: "+fifo.join(" ")+"<br>STATE: "+curObj.getAttribute("state");
+							if(fifo.length==0) {
+								if(curObj.getAttribute("state")=="idle" || curObj.getAttribute("state")=="talk") return true;
+								if(curObj.getAttribute("state").indexOf("_return")!=-1 || curObj.getAttribute("state")=="yawn" || curObj.getAttribute("state")=="yes_nod" || curObj.getAttribute("state")=="no_nod") {
+									// pushArray(fifo,"idle");
+									if(fifo.length==0) {
+										curObj.removeAttribute("fifo");
+									} else {
+										curObj.setAttribute("fifo",fifo.join("~"));
+									}
+									a.action = "idle";
+									// document.getElementById("agentFIFO").innerHTML = "FIFO: "+fifo.join(" ")+"<br>STATE: "+curObj.getAttribute("state");
+									CallMethod("agent_002","InitAction",a);
+									return true;
+								}
+								curObj.setAttribute("free","1");
+								return true;
+							} else {
+								a.action = fifo[0];
+								CallMethod("agent_002","InitAction",a);
+							 // document.getElementById("agentFIFO").innerHTML = "FIFO: "+fifo.join(" ")+"<br>STATE: "+curObj.getAttribute("state");
+								return true;
+							}
+							return false;
+							break;
+						default:
+							break;
+					}
+					return true;
+ 				}
+			]]>
+			</body>
+		</method>
+		<method name="Return" label="RETURN TO IDLE">
+			<params>
+			</params>
+			<body>
+			<![CDATA[
+				function Return(argobj) {
+					if(argobj.pid==null) return false;
+					if(document.getElementById(argobj.pid)==null) return false;
+					var curObj = document.getElementById(argobj.pid);
+					if(curObj.style.display=="none") return false;
+					if(curObj.getAttribute("state")==null) return false;
+					var curState = curObj.getAttribute("state");
+					if(curState=="idle") return false;
+					if(curObj.getAttribute("fifo")==null) {
+						var fifo = new Array();
+					} else {
+						var fifo = curObj.getAttribute("fifo").split("~");
+					}
+					var a = new Object;
+					a.pid = argobj.pid;
+					if(fifo.length==0) {
+						if(curState.indexOf("_return")!=-1 || curState=="yawn" || curState=="yes_nod" || curState=="no_nod") return true;
+						switch(curState) {
+							case "astonish":
+							case "amazement":
+							case "angry":
+								pushArray(fifo,curState+"_return");
+								pushArray(fifo,"idle");
+								curObj.setAttribute("fifo",fifo.join("~"));
+								if(curObj.getAttribute("free")=="1") {
+									a.action = fifo[0];
+									CallMethod("agent_002","InitAction",a);
+								}
+								break;
+							default:
+								pushArray(fifo,"idle");
+								curObj.setAttribute("fifo",fifo.join("~"));
+								curObj.setAttribute("free","1");
+								a.action = fifo[0];
+								CallMethod("agent_002","InitAction",a);
+								return true;
+						}
+						return true;
+					} else {
+						if(fifo[0].indexOf("_return")!=-1) {
+							while(fifo.length>1) popArray(fifo);
+							pushArray(fifo,"idle");
+							curObj.setAttribute("fifo",fifo.join("~"));
+							return true;
+						}
+						if(curState.indexOf("_return")!=-1 || curState=="yawn" || curState=="yes_nod" || curState=="no_nod") {
+							while(fifo.length>0) popArray(fifo);
+							pushArray(fifo,"idle");
+							curObj.setAttribute("fifo",fifo.join("~"));
+							return true;
+						}
+						while(fifo.length>0) popArray(fifo);
+						switch(curState) {
+							case "astonish":
+							case "angry":
+							case "amazement":
+								pushArray(fifo,curState+"_return");
+								pushArray(fifo,"idle");
+								curObj.setAttribute("fifo",fifo.join("~"));
+								if(curObj.getAttribute("free")=="1") {
+									a.action = fifo[0];
+									CallMethod("agent_002","InitAction",a);
+								}
+								return true;
+							default: break;
+						}
+						curObj.setAttribute("free","1");
+						pushArray(fifo,"idle");
+						curObj.setAttribute("fifo",fifo.join("~"));
+						a.action = fifo[0];
+						CallMethod("agent_002","InitAction",a);
+						return true;
+					}
+				}
+			]]>
+			</body>
+		</method>
+		<method name="ShowAgent" label="SHOW" access="private">
+			<params>
+				<param name="transition" label="Transition on display"/>
+				<param name="duration" label="Transition duration"/>
+			</params>
+			<body>
+			<![CDATA[
+				function ShowAgent(argobj) {
+					if(argobj.pid==null) return false;
+					var curObj = document.getElementById(argobj.pid);
+					if(!g_isMSIE) {
+						if(argobj.x!=null && argobj.y!=null) {
+							curObj.style.left = argobj.x+"px";
+							curObj.style.top = argobj.y+"px";
+						}
+						curObj.style.display = "block";
+						curObj.style.visibility = "visible";
+						return true;
+					}
+					var a = 0;
+					var trans, dur;
+					if(isNaN(parseInt(argobj.transition,10))) {
+						curObj.style.display = "inline";
+						curObj.style.visibility = "visible";
+						return true;
+					} else {
+						a = parseInt(argobj.transition,10);
+						if(a <= 0) a = 0;
+						trans = a.toString();
+					}
+					if(isNaN(parseInt(argobj.duration,10))) {
+						dur = "1";
+					} else {
+						a = parseInt(argobj.duration,10);
+						if(a <= 0) a = 1;
+						dur = a.toString();
+					}
+					curObj.style.visibility = "hidden";
+					if(argobj.x!=null && argobj.y!=null) {
+						curObj.style.left = argobj.x+"px";
+						curObj.style.top = argobj.y+"px";
+					}
+					curObj.style.display = "inline";
+					curObj.style.filter = "RevealTrans(duration="+dur+", transition="+trans+")";
+					if(curObj.filters[0]!=null) {
+						curObj.filters[0].Apply();
+						curObj.style.visibility = "visible";
+						curObj.filters[0].Play();
+					} else {
+						curObj.style.visibility = "visible";
+					}
+					return true;
+				}
+			]]>
+			</body>
+		</method>
+		<method name="HideAgent" label="HIDE" access="private">
+			<params>
+				<param name="transition" label="Transition on hide"/>
+				<param name="duration" label="Transition duration"/>
+			</params>
+			<body>
+			<![CDATA[
+				function HideAgent(argobj) {
+					if(argobj.pid==null) return false;
+					var curObj = document.getElementById(argobj.pid);
+					if(!g_isMSIE) {
+						curObj.style.display = "none";
+						curObj.style.visibility = "visible";
+						return true;
+					}
+					var a = 0;
+					var trans, dur;
+					if(isNaN(parseInt(argobj.transition,10))) {
+						curObj.style.display = "none";
+						curObj.style.visibility = "visible";
+						return true;
+					} else {
+						a = parseInt(argobj.transition,10);
+						if(a <= 0) a = 0;
+						trans = a.toString();
+					}
+					if(isNaN(parseInt(argobj.duration,10))) {
+						dur = "1";
+					} else {
+						a = parseInt(argobj.duration,10);
+						if(a <= 0) a = 1;
+						dur = a.toString();
+					}
+					curObj.style.visibility = "visible";
+					curObj.style.display = "inline";
+					curObj.style.filter = "RevealTrans(duration="+dur+", transition="+trans+")";
+					if(curObj.filters[0]!=null) {
+						curObj.filters[0].Apply();
+						curObj.style.visibility = "hidden";
+						curObj.filters[0].Play();
+					} else {
+						curObj.style.visibility = "hidden";
+					}
+					return true;
+				}
+			]]>
+			</body>
+		</method>
+		<method name="teleportAgent" label="TELEPORT">
+			<params>
+				<param name="x" label="X destination"/>
+				<param name="y" label="Y destination"/>
+				<param name="duration" label="Transition duration"/>
+			</params>
+			<body>
+			<![CDATA[
+				function teleportAgent(argobj)
+				{
+					if(argobj.pid==null) return false;
+					var curObj = document.getElementById(argobj.pid);
+					if(!g_isMSIE) {
+						curObj.style.left = argobj.x+"px";
+						curObj.style.top = argobj.y+"px";
+						return true;
+					}
+					var a = new Object;
+					a.pid = argobj.pid;
+					a.transition = "12";
+					if(isNaN(parseInt(argobj.duration,10))) {
+						a.duration = "1";
+					} else {
+						a.duration = argobj.duration;
+					}
+					CallMethod("agent_002", "HideAgent",a);
+					var delay = a.duration*1000;
+					a.x = argobj.x;
+					a.y = argobj.y;
+					CreateTimeActionMethod("agent_002", "ShowAgent", null, delay, a);
+					return true;
+				}
+			]]>
+			</body>
+		</method>
+	</methods>
+</params>

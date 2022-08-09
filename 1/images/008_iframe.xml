@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+'*	008_iframe.xml
+'*	Copyright (c) Websoft, 2007.  All rights reserved.
+-->
+<params>
+	<object>
+		<label>IFRAME for external URL</label>
+		<width>400</width>
+		<height>400</height>
+		<description>Embedded IFRAME to open external URL </description>
+	</object>
+	<page name=" Parameters " w="240" h="140">
+
+		<param type="line" x="8" y="12" w="224" h="44"/>
+
+		<param type="label" text="  IFRAME source " x="20" y="8" w="60" h="13"/>
+		<param type="radio" id="ifile" text="File:" def="no" x="20" y="20" w="30" h="13">
+			<events>
+				<event name="check" target="uri" action="enable" />
+				<event name="uncheck" target="uri" action="disable" />
+			</events>
+		</param>
+		<param type="radio" id="iURL" text="URL:" def="yes" x="20" y="36" w="30" h="13">
+			<events>
+				<event name="check" target="url" action="enable" />
+				<event name="uncheck" target="url" action="disable" />
+			</events>
+		</param>
+		<param type="file" id="uri" text="" def="" x="50" y="20" w="140" h="13"/>
+		<param type="edit" id="url" text="" def="" x="50" y="36" w="140" h="13"/>
+
+		<param type="label" text="Scrolling:" x="10" y="64" w="60" h="13"/>
+		<param type="select" id="scrolling" text="" def="auto" x="70" y="63" w="120" h="13">
+			<items>
+				<item id="auto" label="Automatic"/>
+				<item id="yes" label="Always on"/>
+				<item id="no" label="Alwaus off"/>
+			</items>
+		</param>
+		<param type="label" text="Border style:" x="10" y="80" w="60" h="13"/>
+		<param type="select" id="borderstyle" text="" def="none" x="70" y="79" w="120" h="13">
+			<items>
+				<item id="none" label="No border"/>
+				<item id="solid" label="Solid"/>
+				<item id="double" label="Double"/>
+				<item id="inset" label="Inset"/>
+				<item id="outset" label="Outset"/>
+				<item id="ridge" label="Ridge"/>
+				<item id="groove" label="Groove"/>
+				<item id="dashed" label="Dashed"/>
+				<item id="dotted" label="Dotted"/>
+			</items>
+		</param>
+		<param type="label" text="Border color:" x="10" y="96" w="60" h="13"/>
+		<param type="color" id="bordercolor" text="" def="#999999" x="70" y="95" w="40" h="13" />
+		<param type="label" text="Border width:" x="10" y="112" w="60" h="13"/>
+		<param type="edit" id="borderwidth" text="" def="2" x="70" y="111" w="18" h="13" />
+		<param type="label" text="pixels" x="90" y="112" w="60" h="13"/>
+    </page>
+	<methods>
+		<method name="ReplaceSource" label="REPLACE SOURCE" access="public">
+            <params>
+				<param name="newurl" label="New URL"/>
+			</params>
+            <body>
+                <![CDATA[
+                function ReplaceSource(argobj)
+                {
+                    if(argobj.pid==null || argobj.newurl==null) return false;
+					if(argobj.newurl=="") return false;
+					var sNewURL = argobj.newurl;
+					try {
+						sNewURL = ReplacePropertiesInStr(sNewURL);
+						sNewURL = ReplaceVariablesInStr(sNewURL);
+					} catch(e) {}
+					var oCurObj = document.getElementById(argobj.pid+"_iframe");
+					if(oCurObj==null) return false;
+					oCurObj.src = sNewURL;
+ 					return true;
+				}
+				]]>
+			</body>
+		</method>
+	</methods>
+</params>
