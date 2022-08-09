@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+'*	001_textbox.xml 
+'*	Copyright (c) Websoft, 2006.  All rights reserved.
+-->
+<params>
+	<object>
+		<label>Shadow Text Box</label>
+		<width>400</width>
+		<height>110</height>
+		<description>Shadow Text Box</description>
+	</object>
+    <page name=" Main box " w="220" h="155">
+		<param type="label" text="Text:" x="10" y="9" w="136" h="13"/>
+		<param type="textedit" id="box_text" text="" def="Box text goes here" x="10" y="20" w="174" h="13" />
+		<param type="label" text="Inner margin:" x="10" y="38" w="100" h="13"/>
+		<param type="edit" id="box_margin" text="20" def="20" x="110" y="37" w="18" h="13" />
+		<param type="label" text="pixels" x="130" y="38" w="60" h="13"/>
+		<param type="label" text="Background color:" x="10" y="54" w="100" h="13"/>
+		<param type="color" id="box_backcolor" text="#FEFFFF" def="#FEFFFF" x="110" y="53" w="45" h="13"/>
+		<param type="line" x="9" y="72" w="190" h="1"/>
+		<param type="label" text="Border style:" x="10" y="80" w="100" h="13"/>
+		<param type="select" id="box_borderstyle" text="double" def="double" x="110" y="79" w="90" h="13">
+			<items>
+				<item id="none" label="No border"/>
+				<item id="solid" label="Solid"/>
+				<item id="double" label="Double"/>
+				<item id="inset" label="Inset"/>
+				<item id="outset" label="Outset"/>
+				<item id="ridge" label="Ridge"/>
+				<item id="groove" label="Groove"/>
+				<item id="dashed" label="Dashed"/>
+				<item id="dotted" label="Dotted"/>
+			</items>
+		</param>
+		<param type="label" text="Border color:" x="10" y="96" w="136" h="13"/>
+		<param type="color" id="box_bordercolor" text="#CCCCCC" def="#CCCCCC" x="110" y="95" w="45" h="13"/>
+		<param type="label" text="Border width:" x="10" y="112" w="100" h="13"/>
+		<param type="edit" id="box_borderwidth" text="3" def="3" x="110" y="111" w="18" h="13"/>
+		<param type="label" text="pixels" x="130" y="112" w="60" h="13"/>
+		<param type="label" text="Box opacity:" x="10" y="128" w="100" h="13"/>
+		<param type="edit" id="box_opacity" text="100" def="100" x="110" y="127" w="18" h="13"/>
+		<param type="label" text="%" x="130" y="128" w="10" h="13"/>
+	</page>
+	<page name=" Shadow " w="220" h="155">
+		<param type="line" x="8" y="12" w="204" h="134"/>
+		<param type="label" text=" " x="11" y="6" w="6" h="13"/>
+		<param type="check" id="box_shadow" text="Display box shadow" def="yes" x="15" y="6" w="96" h="13">
+			<events>
+				<event name="check" target="box_shadow_x" action="enable" />
+				<event name="check" target="box_shadow_y" action="enable" />
+				<event name="check" target="box_shadow_opacity" action="enable" />
+				<event name="check" target="box_shadow_copy" action="enable" />
+				<event name="check" target="box_shadow_backcolor" action="enable" />
+				<event name="check" target="box_shadow_borderstyle" action="enable" />
+				<event name="check" target="box_shadow_bordercolor" action="enable" />
+				<event name="check" target="box_shadow_borderwidth" action="enable" />
+				<event name="check" target="box_sh_label1" action="enable" />
+				<event name="check" target="box_sh_label2" action="enable" />
+				<event name="check" target="box_sh_label3" action="enable" />
+				<event name="check" target="box_sh_label4" action="enable" />
+				<event name="check" target="box_sh_label5" action="enable" />
+				<event name="check" target="box_sh_label6" action="enable" />
+				<event name="check" target="box_sh_label7" action="enable" />
+				<event name="check" target="box_sh_label8" action="enable" />
+				<event name="check" target="box_sh_label9" action="enable" />
+				<event name="check" target="box_sh_label10" action="enable" />
+				<event name="check" target="box_sh_label11" action="enable" />
+				<event name="uncheck" target="box_shadow_x" action="disble" />
+				<event name="uncheck" target="box_shadow_y" action="disable" />
+				<event name="uncheck" target="box_shadow_opacity" action="disable" />
+				<event name="uncheck" target="box_shadow_copy" action="disable" />
+				<event name="uncheck" target="box_shadow_backcolor" action="disable" />
+				<event name="uncheck" target="box_shadow_borderstyle" action="disable" />
+				<event name="uncheck" target="box_shadow_bordercolor" action="disable" />
+				<event name="uncheck" target="box_shadow_borderwidth" action="disable" />
+				<event name="uncheck" target="box_sh_label1" action="disable" />
+				<event name="uncheck" target="box_sh_label2" action="disable" />
+				<event name="uncheck" target="box_sh_label3" action="disable" />
+				<event name="uncheck" target="box_sh_label4" action="disable" />
+				<event name="uncheck" target="box_sh_label5" action="disable" />
+				<event name="uncheck" target="box_sh_label6" action="disable" />
+				<event name="uncheck" target="box_sh_label7" action="disable" />
+				<event name="uncheck" target="box_sh_label8" action="disable" />
+				<event name="uncheck" target="box_sh_label9" action="disable" />
+				<event name="uncheck" target="box_sh_label10" action="disable" />
+				<event name="uncheck" target="box_sh_label11" action="disable" />
+			</events>
+		</param>
+		<param type="label" id="box_sh_label1" text="Shadow shift    hor.:" x="15" y="25" w="70" h="13"/>
+		<param type="edit" id="box_shadow_x" text="5" def="5" x="85" y="24" w="18" h="13"/>
+		<param type="label" id="box_sh_label2" text="vert.:" x="116" y="25" w="22" h="13"/>
+     	<param type="edit" id="box_shadow_y" text="5" def="5" x="140" y="24" w="18" h="13"/>
+		<param type="label" id="box_sh_label3" text="pixels" x="162" y="25" w="40" h="13"/>
+		<param type="label" id="box_sh_label4" text="Shadow intensity:" x="15" y="41" w="70" h="13"/>
+		<param type="edit" id="box_shadow_opacity" text="40" def="40" x="85" y="40" w="18" h="13"/>
+		<param type="label" id="box_sh_label5" text="%" x="106" y="41" w="10" h="13"/>
+		<param type="line" x="13" y="60" w="194" h="80"/>
+		<param type="label" text=" " x="16" y="54" w="4" h="13"/>
+		<param type="check" id="box_shadow_copy" text="Shadow copies main box" def="yes" x="20" y="54" w="120" h="13">
+			<events>
+				<event name="check" target="box_shadow_backcolor" action="disable" />
+				<event name="check" target="box_shadow_borderstyle" action="disable" />
+				<event name="check" target="box_shadow_bordercolor" action="disable" />
+				<event name="check" target="box_shadow_borderwidth" action="disable" />
+				<event name="check" target="box_sh_label7" action="disable" />
+				<event name="check" target="box_sh_label8" action="disable" />
+				<event name="check" target="box_sh_label9" action="disable" />
+				<event name="check" target="box_sh_label10" action="disable" />
+				<event name="check" target="box_sh_label11" action="disable" />
+				<event name="uncheck" target="box_shadow_backcolor" action="enable" />
+				<event name="uncheck" target="box_shadow_borderstyle" action="enable" />
+				<event name="uncheck" target="box_shadow_bordercolor" action="enable" />
+				<event name="uncheck" target="box_shadow_borderwidth" action="enable" />
+				<event name="uncheck" target="box_sh_label7" action="enable" />
+				<event name="uncheck" target="box_sh_label8" action="enable" />
+				<event name="uncheck" target="box_sh_label9" action="enable" />
+				<event name="uncheck" target="box_sh_label10" action="enable" />
+				<event name="uncheck" target="box_sh_label11" action="enable" />
+			</events>
+		</param>
+		<param type="label" id="box_sh_label7" text="Shadow background color:" x="20" y="73" w="90" h="13"/>
+		<param type="color" id="box_shadow_backcolor" text="#CCCCCC" def="#CCCCCC" x="110" y="72" w="45" h="13"/>
+		<param type="label" id="box_sh_label8" text="Shadow border style:" x="20" y="89" w="90" h="13"/>
+		<param type="select" id="box_shadow_borderstyle" text="solid" def="solid" x="110" y="88" w="90" h="13">
+			<items>
+				<item id="none" label="No border"/>
+				<item id="solid" label="Solid"/>
+				<item id="double" label="Double"/>
+				<item id="inset" label="Inset"/>
+				<item id="outset" label="Outset"/>
+				<item id="ridge" label="Ridge"/>
+				<item id="groove" label="Groove"/>
+				<item id="dashed" label="Dashed"/>
+				<item id="dotted" label="Dotted"/>
+			</items>
+		</param>
+		<param type="label" id="box_sh_label9" text="Shadow border color:" x="20" y="105" w="90" h="13"/>
+		<param type="color" id="box_shadow_bordercolor" text="#CCCCCC" def="#CCCCCC" x="110" y="106" w="45" h="13"/>
+		<param type="label" id="box_sh_label10" text="Shadow border width:" x="20" y="123" w="90" h="13"/>
+		<param type="edit" id="box_shadow_borderwidth" text="3" def="3" x="110" y="122" w="18" h="13"/>
+		<param type="label" id="box_sh_label11" text="pixels" x="130" y="123" w="60" h="13"/>
+	</page>
+	<page name=" Effects " w="220" h="155">
+		<param type="check" id="typewriter" text="Typewriter effect" def="no" x="10" y="10" w="80" h="13">
+			<events>
+				<event name="check" target="typewriter_speed" action="enable" />
+				<event name="check" target="box_sh_label12" action="enable" />
+				<event name="check" target="box_sh_label13" action="enable" />
+				<event name="uncheck" target="typewriter_speed" action="disable" />
+				<event name="uncheck" target="box_sh_label12" action="disable" />
+				<event name="uncheck" target="box_sh_label13" action="disable" />
+			</events>
+		</param>
+		<param type="label" id="box_sh_label12" text="Typewriter speed:" x="10" y="27" w="90" h="13"/>
+		<param type="edit" id="typewriter_speed" text="8" def="8" x="74" y="26" w="18" h="13"/>
+		<param type="label" id="box_sh_label13" text="chars/sec" x="95" y="27" w="70" h="13"/>
+    </page>
+	<methods>
+		<method name="Constructor" label="Constructor" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function Constructor(argobj)
+                {
+                    if(argobj.pid==null) return false;
+					if(document.getElementById(argobj.pid)==null) return false;
+					var curObj = document.getElementById(argobj.pid);
+					if(g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']")==null) return false;
+					var params = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+					var tw = params.selectSingleNode("typewriter").firstChild.nodeValue=="yes" ? true : false;
+					if(!tw) return true;
+					var speed = params.selectSingleNode("typewriter_speed").firstChild.nodeValue;
+					speed = parseInt(speed,10);
+					if(isNaN(speed)) speed = 8;
+					speed = Math.round(1000/speed);
+					curObj.setAttribute("speed", speed.toString());
+					var txt = trim(params.selectSingleNode("box_text").firstChild.nodeValue,true,true,true,true);
+					var ntxt = "";
+					var stxt = "";
+					var tagflag = false;
+					var entityflag = false;
+					var cnt = 0;
+					for(var i=0;i<txt.length;i++) {
+						if(tagflag && txt.charAt(i)!=">") {
+							ntxt += txt.charAt(i);
+							stxt += txt.charAt(i);
+							continue;
+						}
+						if(entityflag && txt.charAt(i)!=";") {
+							ntxt += txt.charAt(i);
+							stxt += txt.charAt(i);
+							continue;
+						}
+						switch(txt.charAt(i)) {
+							case "<":
+								ntxt += "<";
+								stxt += "<";
+								tagflag = true;
+								break;
+							case ">":
+								ntxt += ">";
+								stxt += ">";
+								tagflag = false;
+								break;
+							case "&":
+								ntxt += "<span id='"+argobj.pid+"_i"+cnt.toString()+"' style='visibility:hidden'>&";
+								stxt += "<span style='visibility:hidden'>&";
+								cnt++;
+								entityflag = true;
+								break;
+							case ";":
+								if(entityflag) {
+									entityflag = false;
+									ntxt += ";</span>";
+									stxt += ";</span>";
+									break;
+								}
+							default:
+								ntxt += "<span id='"+argobj.pid+"_i"+cnt.toString()+"' style='visibility:hidden'>"+txt.charAt(i)+"</span>";
+								stxt += "<span style='visibility:hidden'>"+txt.charAt(i)+"</span>";
+								cnt++;
+						}
+					}
+					if(document.getElementById(argobj.pid+"_sText")!=null) document.getElementById(argobj.pid+"_sText").innerHTML = stxt;
+					document.getElementById(argobj.pid+"_rText").innerHTML = ntxt;
+					curObj.setAttribute("cid","0");
+					curObj.setAttribute("lid",cnt.toString());
+					CallMethod("001_textbox", "TypeChar", argobj);
+ 					return true;
+				}
+				]]>
+			</body>
+		</method>
+		<method name="TypeChar" label="TypeChar" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function TypeChar(argobj)
+                {
+                    if(argobj.pid==null) return false;
+					if(document.getElementById(argobj.pid)==null) return false;
+					var curObj = document.getElementById(argobj.pid);
+					var cnt = curObj.getAttribute("cid");
+					if(document.getElementById(argobj.pid+"_i"+cnt)!=null) document.getElementById(argobj.pid+"_i"+cnt).style.visibility = "visible";
+					cnt = parseInt(cnt,10);
+					cnt++;
+					cnt = cnt.toString();
+					if(curObj.getAttribute("lid")!=cnt) {
+						var delay = parseInt(curObj.getAttribute("speed"),10);
+						curObj.setAttribute("cid",cnt);
+						CreateTimeActionMethod("001_textbox", "TypeChar", null, delay, argobj);
+					}
+ 					return true;
+				}
+				]]>
+			</body>
+		</method>
+	</methods>
+</params>

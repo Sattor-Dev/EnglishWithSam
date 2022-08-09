@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+'*	006_listitem.xml
+'*	Copyright (c) Websoft, 2006.  All rights reserved.
+-->
+<params>
+	<object>
+		<label>Simple List Item</label>
+		<width>350</width>
+		<height>52</height>
+		<description>Simple List Item</description>
+	</object>
+	<page name=" Parameters " w="190" h="130">
+		<param type="label" text="Background color:" x="10" y="10" w="90" h="13"/>
+		<param type="color" id="fill_color" text="#D9F2FF" def="#D9F2FF" x="100" y="9" w="45" h="13"/>
+		<param type="label" text="Border color:" x="10" y="26" w="90" h="13"/>
+		<param type="color" id="border_color" text="#B7E8FF" def="#B7E8FF" x="100" y="25" w="45" h="13"/>
+		<param type="label" text="Item mark:" x="10" y="42" w="90" h="13"/>
+		<param type="select" id="listitem_mark" text="ok" def="ok" x="100" y="41" w="100" h="13">
+			<items>
+				<item id="1" label="Number 1"/>
+				<item id="2" label="Number 2"/>
+				<item id="3" label="Number 3"/>
+				<item id="4" label="Number 4"/>
+				<item id="5" label="Number 5"/>
+				<item id="6" label="Number 6"/>
+				<item id="7" label="Number 7"/>
+				<item id="8" label="Number 8"/>
+				<item id="9" label="Number 9"/>
+				<item id="bomb" label="Bomb"/>
+				<item id="qu" label="Question"/>
+				<item id="att" label="Attention"/>
+				<item id="ok" label="Checkmark"/>
+				<item id="eye" label="Eye"/>
+				<item id="star" label="Star"/>
+				<item id="in" label="Yin-Yang"/>
+				<item id="drop" label="Drop"/>
+				<item id="frown" label="Frown"/>
+				<item id="pointer" label="Arrow"/>
+				<item id="smile" label="Smile"/>
+				<item id="scull" label="Scull"/>
+				<item id="nav" label="Steering"/>
+			</items>
+		</param>
+		<param type="line" x="10" y="58" w="190" h="1"/>
+		<param type="label" text="Item text:" x="10" y="64" w="100" h="13"/>
+		<param type="textedit" id="innerText" text="Item text goes here" def="Item text goes here" x="10" y="74" w="174" h="13" />
+		<param type="label" text="Inner margin:" x="10" y="90" w="100" h="13"/>
+		<param type="edit" id="listitem_margin" text="5" def="5" x="110" y="89" w="18" h="13" />
+		<param type="label" text="pixels" x="130" y="90" w="35" h="13"/>
+		<param type="label" text="Vertical align:" x="10" y="106" w="100" h="13"/>
+		<param type="radio" id="valign_top" text="top" def="yes" x="110" y="105" w="28" h="13" />
+		<param type="radio" id="valign_middle" text="mid" def="no" x="140" y="105" w="28" h="13" />
+		<param type="radio" id="valign_bottom" text="bottom" def="no" x="170" y="105" w="32" h="13" />
+	</page>
+</params>

@@ -1,0 +1,747 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+'*	003_blocklist.xml
+'*	Copyright (c) Websoft, 2007.  All rights reserved.
+-->
+<params>
+	<object>
+		<label>Standard List</label>
+		<width>350</width>
+		<height>100</height>
+		<description>Standard List with predefined items transition</description>
+	</object>
+	<page name=" Parameters " w="220" h="190">
+		<param type="label" text="Items border color:" x="10" y="10" w="100" h="13"/>
+		<param type="select" id="listblock_profile" text="lightblue" def="lightblue" x="110" y="9" w="97" h="13">
+			<items>
+				<item id="lightblue" label="Lightblue"/>
+				<item id="turq" label="Turquoise"/>
+				<item id="yellow" label="Yellow"/>
+				<item id="brown" label="Brown"/>
+				<item id="red" label="Red"/>
+				<item id="olive" label="Olive"/>
+				<item id="orange" label="Orange"/>
+				<item id="pink" label="Pink"/>
+				<item id="green" label="Green"/>
+				<item id="grey" label="Grey"/>
+				<item id="blue_green" label="Teal"/>
+				<item id="blue" label="Blue"/>
+				<item id="steel_blue" label="Steel Blue"/>
+				<item id="deeppink" label="Crimson"/>
+				<item id="violet" label="Violet"/>
+			</items>
+		</param>
+
+      <param type="label" text="Items mark:" x="10" y="31" w="100" h="13"/>
+      <param type="select" id="blocklist_mark" text="ok" def="ok" x="110" y="29" w="97" h="13">
+			<items>
+				<item id="number" label="Position number (1-9)"/>
+				<item id="bomb" label="Bomb"/>
+				<item id="qu" label="Question"/>
+				<item id="att" label="Attention"/>
+				<item id="att_red" label="Attention!!!"/>
+				<item id="ok" label="Checkmark"/>
+				<item id="eye" label="Eye"/>
+				<item id="star" label="Star"/>
+				<item id="in" label="Yin-Yang"/>
+				<item id="drop" label="Drop"/>
+				<item id="frown" label="Frown"/>
+				<item id="snow" label="Snowflake"/>
+				<item id="pointer" label="Arrow"/>
+				<item id="smile" label="Smile"/>
+				<item id="scull" label="Scull"/>
+				<item id="nav" label="Steering"/>
+			</items>
+      </param>
+      <param type="label" text="Items text:" x="10" y="51" w="100" h="13"/>
+      <param type="list" id="table" text="yes" def="yes" x="10" y="49" w="197" h="95">
+			<params w="200" h="50" label="Item text">
+				<param type="label" text="Item text:" x="10" y="10" w="90" h="13"/>
+				<param type="textedit" id="innerText" text="Item text" def="Item text goes here" x="100" y="9" w="74" h="13"/>
+				<param type="line" x="10" y="26" w="180" h="1"/>
+				<param type="button" id="OK" text="OK" x="85" y="34" w="50" h="14"/>
+				<param type="button" id="CANCEL" text="Cancel" x="140" y="34" w="50" h="14"/>
+			</params>
+      </param>
+		<param type="label" text="Inner margin:" x="10" y="154" w="100" h="13"/>
+		<param type="edit" id="blocklist_margin" text="5" def="5" x="123" y="151" w="18" h="13" />
+		<param type="label" text="pixels" x="143" y="154" w="68" h="13"/>
+		<param type="label" text="Space between items:" x="10" y="172" w="130" h="13"/>
+		<param type="edit" id="items_margin" text="5" def="5" x="123" y="169" w="18" h="13" />
+		<param type="label" text="pixels" x="143" y="172" w="68" h="13"/>
+	</page>
+	<page name=" Display " w="220" h="250">
+		<param type="line" id="line_1" x="8" y="54" w="204" h="190"/>
+		<param type="radio" id="call" text="External call" def="no" x="15" y="6" w="80" h="13">
+			<events>
+				<event name="check" target="firstitem" action="enable" />
+				<event name="uncheck" target="firstitem" action="disable" />
+			</events>
+		</param>
+		<param type="radio" id="auto" text="Automatic with delay" def="yes" x="15" y="20" w="80" h="13">
+			<events>
+				<event name="check" target="delay_time" action="enable" />
+				<event name="check" target="ms" action="enable" />
+				<event name="uncheck" target="delay_time" action="disable" />
+				<event name="uncheck" target="ms" action="disable" />
+			</events>
+		</param>
+		<param type="radio" id="on_link" text="Text link click:" def="no" x="15" y="34" w="80" h="13">
+			<events>
+				<event name="check" target="link_label" action="enable" />
+				<event name="check" target="link_text" action="enable" />
+
+				<event name="uncheck" target="link_label" action="disable" />
+				<event name="uncheck" target="link_text" action="disable" />
+			</events>
+		</param>
+		<param type="radio" id="on_button" text="Button click" def="no" x="15" y="48" w="56" h="13">
+		</param>
+
+		<param type="label" text=" " x="12" y="48" w="3" h="13"/>
+		<param type="edit" id="delay_time" text="2000" def="2000" x="100" y="19" w="25" h="13"/>
+		<param type="label" id="ms" text="ms" x="129" y="20" w="100" h="13"/>
+
+		<param type="textedit" id="link_text" text="Next" def="Next" x="100" y="34" w="100" h="13" />
+
+		<param type="radio" id="custom" text="Use image button:" def="no" x="22" y="64" w="76" h="13">
+			<events>
+				<event name="check" target="next_but_img" action="enable" />
+				<event name="check" target="next_img" action="enable" />
+				<event name="uncheck" target="next_but_img" action="disable" />
+				<event name="uncheck" target="next_img" action="disable" />
+			</events>
+		</param>
+
+		<param type="radio" id="standard" text="Use form button" def="yes" x="22" y="80" w="85" h="13">
+			<events>
+				<event name="check" target="button_label" action="enable" />
+				<event name="check" target="button_text" action="enable" />
+				<event name="check" target="label_2" action="enable" />
+				<event name="check" target="input_border_style" action="enable" />
+				<event name="check" target="input_border_width" action="enable" />
+				<event name="check" target="label_3" action="enable" />
+				<event name="check" target="label_4" action="enable" />
+				<event name="check" target="input_border_color" action="enable" />
+				<event name="check" target="label_5" action="enable" />
+				<event name="check" target="input_bg_color" action="enable" />
+				<event name="check" target="label_6" action="enable" />
+				<event name="check" target="input_font" action="enable" />
+				<event name="check" target="input_font_size" action="enable" />
+				<event name="check" target="label_7" action="enable" />
+				<event name="check" target="label_8" action="enable" />
+				<event name="check" target="input_font_style" action="enable" />
+				<event name="check" target="label_9" action="enable" />
+				<event name="check" target="input_font_color" action="enable" />
+				<event name="check" target="label_10" action="enable" />
+				<event name="check" target="input_text_align" action="enable" />
+
+				<event name="uncheck" target="button_label" action="disable" />
+				<event name="uncheck" target="button_text" action="disable" />
+				<event name="uncheck" target="label_2" action="disable" />
+				<event name="uncheck" target="input_border_style" action="disable" />
+				<event name="uncheck" target="input_border_width" action="disable" />
+				<event name="uncheck" target="label_3" action="disable" />
+				<event name="uncheck" target="label_4" action="disable" />
+				<event name="uncheck" target="input_border_color" action="disable" />
+				<event name="uncheck" target="label_5" action="disable" />
+				<event name="uncheck" target="input_bg_color" action="disable" />
+				<event name="uncheck" target="label_6" action="disable" />
+				<event name="uncheck" target="input_font" action="disable" />
+				<event name="uncheck" target="input_font_size" action="disable" />
+				<event name="uncheck" target="label_7" action="disable" />
+				<event name="uncheck" target="label_8" action="disable" />
+				<event name="uncheck" target="input_font_style" action="disable" />
+				<event name="uncheck" target="label_9" action="disable" />
+				<event name="uncheck" target="input_font_color" action="disable" />
+				<event name="uncheck" target="label_10" action="disable" />
+				<event name="uncheck" target="input_text_align" action="disable" />
+			</events>
+		</param>
+
+		<param type="file" id="next_img" text="" def="" x="100" y="63" w="85" h="13"/>
+
+		<param type="label" id="button_label" text="Button text:" x="29" y="112" w="70" h="13"/>
+		<param type="edit" id="button_text" text="Next" def="Next" x="100" y="111" w="85" h="13"/>
+		<param type="label" id="label_2" text="Border style:" x="29" y="128" w="70" h="13"/>
+		<param type="select" id="input_border_style" text="" def="solid" x="100" y="127" w="40" h="13">
+			<items>
+				<item id="none" label="No border"/>
+				<item id="solid" label="Solid"/>
+				<item id="double" label="Double"/>
+				<item id="inset" label="Outset"/>
+				<item id="outset" label="Inset"/>
+				<item id="dashed" label="Dashed"/>
+				<item id="dotted" label="Dotted"/>
+			</items>
+		</param>
+		<param type="edit" id="input_border_width" text="2" def="2" x="145" y="127" w="18" h="13"/>
+		<param type="label" id="label_3" text="pixels" x="165" y="128" w="30" h="13"/>
+		<param type="label" id="label_4" text="Border color:" x="29" y="144" w="70" h="13"/>
+		<param type="color" id="input_border_color" text="#666666" def="#666666" x="100" y="143" w="45" h="13"/>
+		<param type="label" id="label_5" text="Background color:" x="29" y="160" w="70" h="13"/>
+		<param type="color" id="input_bg_color" text="#F0F0F0" def="#F0F0F0" x="100" y="159" w="45" h="13"/>
+		<param type="label" id="label_6" text="Font:" x="29" y="176" w="70" h="13"/>
+		<param type="select" id="input_font" text="Arial" def="Arial" x="100" y="175" w="40" h="13">
+			<items>
+				<item id="Arial" label="Arial"/>
+				<item id="Tahoma" label="Tahoma"/>
+				<item id="Times" label="Times"/>
+				<item id="Verdana" label="Verdana"/>
+				<item id="Courier" label="Courier"/>
+			</items>
+		</param>
+		<param type="edit" id="input_font_size" text="12" def="12" x="145" y="175" w="18" h="13"/>
+		<param type="label" id="label_7" text="pixels" x="170" y="176" w="26" h="13"/>
+		<param type="label" id="label_8" text="Font style:" x="29" y="192" w="70" h="13"/>
+		<param type="select" id="input_font_style" text="normal" def="normal" x="100" y="191" w="80" h="13">
+			<items>
+				<item id="normal" label="Normal"/>
+				<item id="italic" label="Italic"/>
+				<item id="bold" label="Bold"/>
+				<item id="bitalic" label="Bold Italic"/>
+			</items>
+		</param>
+		<param type="label" id="label_9" text="Font color:" x="29" y="208" w="70" h="13"/>
+		<param type="color" id="input_font_color" text="#000000" def="#000000" x="100" y="207" w="45" h="13"/>
+		<param type="label" id="label_10" text="Text align:" x="29" y="224" w="70" h="13"/>
+		<param type="select" id="input_text_align" text="center" def="center" x="100" y="223" w="80" h="13">
+			<items>
+				<item id="center" label="Center"/>
+				<item id="left" label="Left"/>
+				<item id="right" label="Right"/>
+			</items>
+		</param>
+
+		<param type="check" id="firstitem" text="Display first item automatically" def="yes" x="100" y="6" w="110" h="13"/>
+
+		<param type="label" id="label_13" text="Button/link align:" x="29" y="96" w="70" h="13"/>
+		<param type="select" id="btn_align" text="" def="right" x="100" y="95" w="80" h="13">
+			<items>
+				<item id="center" label="Center"/>
+				<item id="left" label="Left"/>
+				<item id="right" label="Right"/>
+			</items>
+		</param>
+	</page>
+	<page name=" Effects " w="220" h="190">
+		<param type="line" x="8" y="16" w="205" h="60"/>
+		<param type="label" text=" " x="12" y="10" w="6" h="13"/>
+		<param type="check" id="eff" text="Use transitions" def="yes" x="15" y="10" w="100" h="13">
+			<events>
+				<event name="check" target="eff_label" action="enable" />
+				<event name="check" target="trans" action="enable" />
+				<event name="check" target="time" action="enable" />
+				<event name="check" target="time2" action="enable" />
+				<event name="check" target="durat" action="enable" />
+				<event name="uncheck" target="eff_label" action="disable" />
+				<event name="uncheck" target="trans" action="disable" />
+				<event name="uncheck" target="time" action="disable" />
+				<event name="uncheck" target="time2" action="disable" />
+				<event name="uncheck" target="durat" action="disable" />
+			</events>
+		</param>
+	  <param type="label" id="eff_label" text="trans.:" x="15" y="33" w="90" h="13"/>
+      <param type="select" id="trans" text="6" def="6" x="50" y="32" w="150" h="13">
+			<items>
+				<item id="0" label="Box in"/>
+				<item id="1" label="Box out"/>
+				<item id="2" label="Circle in"/>
+				<item id="3" label="Circle out"/>
+				<item id="4" label="Wipe up"/>
+				<item id="5" label="Wipe down"/>
+				<item id="6" label="Wipe right"/>
+				<item id="7" label="Wipe left"/>
+				<item id="8" label="Vertical blinds"/>
+				<item id="9" label="Horizontal blinds"/>
+				<item id="10" label="Checkerboard across"/>
+				<item id="11" label="Checkerboard down"/>
+				<item id="12" label="Random dissolve"/>
+				<item id="13" label="Split vertical in"/>
+				<item id="14" label="Split vertical out"/>
+				<item id="15" label="Split horizontal in"/>
+				<item id="16" label="Split horizontal out"/>
+				<item id="17" label="Strips left down"/>
+				<item id="18" label="Strips left up"/>
+				<item id="19" label="Strips right down"/>
+				<item id="20" label="Strips right up"/>
+				<item id="21" label="Random bars horizontal"/>
+				<item id="22" label="Random bars vertical"/>
+				<item id="23" label="Random"/>
+			</items>
+      </param>
+	  <param type="label" id="time" text="duration:" x="15" y="51" w="90" h="13"/>
+	  <param type="edit" id="durat" text="1" def="1" x="50" y="49" w="18" h="13"/>
+	  <param type="label" id="time2" text="sec" x="74" y="51" w="10" h="13"/>
+	</page>
+	<methods>
+		<method name="Constructor" label="Constructor" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function Constructor(argobj)
+                {
+                    if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var oParams = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+					if(oParams==null) return false;
+					var oArgs = new Object;
+					oArgs.pid = argobj.pid;
+					var oObject = GetObjectById(argobj.pid);
+					if(oObject==null) return false;
+					var sDelay = oObject.getAttribute("begin");
+					if(sDelay!=null && sDelay!="0") {
+						var iDelay = parseInt(sDelay,10);
+						if(!isNaN(iDelay)) {
+							CreateTimeActionMethod("003_blocklist", "Start", null, iDelay, oArgs);
+							return true;
+						}
+					}
+					CallMethod("003_blocklist", "Start", oArgs);
+					return true;
+                }
+                ]]>
+            </body>
+        </method>
+		<method name="Start" label="Start" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function Start(argobj)
+                {
+                    if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var oParams = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+					if(oParams==null) return false;
+					var aItems = oParams.selectNodes("table/item");
+					oCurObj.setAttribute("total", aItems.length);
+					var oArgs = new Object;
+					oArgs.pid = argobj.pid;
+					oCurObj.setAttribute("last","0");
+					oCurObj.setAttribute("item","1");
+					var bCall = oParams.selectSingleNode("call").text=="yes";
+					if(bCall) {
+						var bMode = oParams.selectSingleNode("firstitem").text=="yes";
+						if(!bMode) return true;
+					}
+					CallMethod("003_blocklist", "ShowItem", argobj);
+					return true;
+                }
+                ]]>
+            </body>
+        </method>
+		<method name="ShowItem" label="ShowItem" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function ShowItem(argobj)
+                {
+                    if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var oParams = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+					if(oParams==null) return false;
+
+					var bCall = oParams.selectSingleNode("call").text=="yes";
+					var bAuto = oParams.selectSingleNode("auto").text=="yes";
+					var bButton = oParams.selectSingleNode("on_button").text=="yes";
+					var bLink = oParams.selectSingleNode("on_link").text=="yes";
+					var bClick = bButton || bLink;
+
+					var bEffect = oParams.selectSingleNode("eff").text=="yes";
+					var oArgs = new Object;
+					oArgs.pid = argobj.pid;
+					CallMethod("003_blocklist", "HideButton", oArgs);
+					var oObject = GetObjectById(argobj.pid);
+					if(oObject==null) return false;
+					var sWidth = oObject.getAttribute("w");
+					var sCurItem = oCurObj.getAttribute("item");
+					var oCurItem = document.getElementById(argobj.pid+"_"+sCurItem);
+					if(oCurItem==null) return false;
+					oCurItem.style.display = g_isMSIE ? "inline" : "block";
+					oCurItem.style.width = sWidth+"px";
+					var iTransTime = 10;
+					if(bEffect) {
+						var sTransTime = oParams.selectSingleNode("durat").text;
+						iTransTime = parseFloat(sTransTime);
+						if(isNaN(iTransTime)) {
+							iTransTime = 0;
+						} else {
+							iTransTime = Math.round(iTransTime*1000);
+						}
+						if(g_isMSIE) {
+							if(oCurItem.filters[0]!=null) {
+								oCurItem.filters[0].Apply();
+								oCurItem.style.visibility = "visible";
+								oCurItem.filters[0].Play();
+							} else {
+								oCurItem.style.visibility = "visible";
+							}
+						} else {
+							if(g_isFireFox) {
+								oCurItem.style.visibility = "visible";
+								CallMethod("003_blocklist", "FFTransition", oArgs);
+							} else {
+								oCurItem.style.visibility = "visible";
+							}
+						}
+					} else {
+						oCurItem.style.visibility = "visible";
+					}
+					oCurObj.setAttribute("last",sCurItem);
+					var iTotal = parseInt(oCurObj.getAttribute("total"),10);
+					var iCurItem = parseInt(sCurItem,10);
+					iCurItem++;
+					if(iCurItem>iTotal) {
+						oCurObj.setAttribute("item", "");
+						CreateTimeActionMethod("003_blocklist", "Event", null, iTransTime, oArgs);
+						return true;
+					} else {
+						oCurObj.setAttribute("item", iCurItem.toString());
+					}
+					if(bAuto) {
+						var sDelay = oParams.selectSingleNode("delay_time").text;
+						var iDelay = parseFloat(sDelay);
+						if(isNaN(iDelay)) {
+							iDelay = 2000;
+						} else {
+							iDelay = Math.round(iDelay);
+						}
+						iDelay = iDelay + iTransTime;
+						CreateTimeActionMethod("003_blocklist", "ShowItem", null, iDelay, oArgs);
+					} else {
+						if(bClick) {
+							if(bEffect) {
+								CreateTimeActionMethod("003_blocklist", "ShowButton", null, iTransTime, oArgs);
+							} else {
+								CallMethod("003_blocklist", "ShowButton", oArgs);
+							}
+						}
+					}
+					CreateTimeActionMethod("003_blocklist", "Event", null, iTransTime, oArgs);
+					return true;
+				}
+                ]]>
+            </body>
+        </method>
+		<method name="Event" label="Event" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function Event(argobj)
+                {
+                    if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					FireEvent(argobj.pid,"onDisplayItem");
+					return true;
+                }
+                ]]>
+            </body>
+        </method>
+		<method name="NextItem" label="NEXT ITEM" access="public">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function NextItem(argobj)
+                {
+                    if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var oParams = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+					if(oParams==null) return false;
+					var oArgs = new Object;
+					oArgs.pid = argobj.pid;
+					CreateTimeActionMethod("003_blocklist", "ShowItem", null, 50, oArgs);
+					//CallMethod("003_blocklist", "ShowItem", argobj);
+					return true;
+                }
+                ]]>
+            </body>
+        </method>
+		<method name="FFTransition" label="FFTransition" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function FFTransition(argobj)
+                {
+                    if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var oParams = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+					if(oParams==null) return false;
+					var oArgs = new Object;
+					var sCurItem = oCurObj.getAttribute("item");
+					var sID = argobj.pid+"_"+sCurItem;
+					var oCurItem = document.getElementById(argobj.pid+"_"+sCurItem);
+					if(oCurItem==null) return false;
+					var iTop = oCurItem.offsetTop;
+					var iLeft = oCurItem.offsetLeft;
+					var iWidth = oCurItem.offsetWidth;
+					var iHeight = oCurItem.offsetHeight;
+					var sTransTime = oParams.selectSingleNode("durat").text;
+					iTransTime = parseFloat(sTransTime);
+					if(isNaN(iTransTime)) {
+						iTransTime = 1000;
+					} else {
+						iTransTime = Math.round(iTransTime*1000);
+					}
+					var sTransType = oParams.selectSingleNode("trans").text;
+					var dtNow = new Date;
+					var iNow = dtNow.valueOf();
+					var sTransID = sID + "_tranin";
+					var iEnd = iNow + iTransTime;
+					if(sTransType=="12") {
+						CreateTimeActionAlpha(sID, 0, iTransTime, 0, 100);
+					} else {
+						var oDiv = document.createElement("div");
+						oDiv.setAttribute("id", sTransID);
+						oDiv.style.position = "absolute";
+						oDiv.style.left = iLeft+"px";
+						oDiv.style.top = iTop+"px";
+						oDiv.style.width = iWidth+"px";
+						oDiv.style.height = iHeight+"px";
+						oDiv.style.backgroundColor = "#FFFFFF";
+						oDiv.style.zIndex = 200;
+						oCurItem.parentNode.appendChild(oDiv)
+						switch(sTransType) {
+							case "4":		// down side up
+								CreateTimeActionSize(sTransID, 0, iTransTime, iWidth, iHeight, iWidth, 0);
+								break;
+							case "7":
+								CreateTimeActionSize(sTransID, 0, iTransTime, iWidth, iHeight, 0, iHeight);
+								break;
+							case "19":
+							case "20":
+							case "6":
+								CreateTimeActionSize(sTransID, 0, iTransTime, iWidth, iHeight, 0, iHeight);
+								CreateTimeActionMove(sTransID, 0, iTransTime, iLeft, iTop, iLeft+iWidth, iTop);
+								break;
+							default:
+								CreateTimeActionSize(sTransID, 0, iTransTime, iWidth, iHeight, iWidth, 0);
+								CreateTimeActionMove(sTransID, 0, iTransTime, iLeft, iTop, iLeft, iTop + iHeight);
+								break;
+						}
+
+						CreateTimeActionDestroy(sTransID,  iTransTime+100);
+					}
+					return true;
+				}
+                ]]>
+            </body>
+        </method>
+		<method name="ShowButton" label="ShowButton" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function ShowButton(argobj)
+                {
+                    if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var oParams = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+					if(oParams==null) return false;
+					var oArgs = new Object;
+					oArgs.pid = argobj.pid;
+					var sCurItem = oCurObj.getAttribute("item");
+					var iCurItem = parseInt(sCurItem,10);
+					var aItems = oParams.selectNodes("table/item");
+					if(iCurItem > aItems.length) return false;
+					var oButton = document.getElementById(argobj.pid+"_nextbutton");
+					if(oButton==null) return false;
+					oButton.style.display = g_isMSIE ? "inline" : "block";
+					return true;
+                }
+                ]]>
+            </body>
+        </method>
+		<method name="HideButton" label="HideButton" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function HideButton(argobj)
+                {
+                    if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var oParams = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+					if(oParams==null) return false;
+					var oArgs = new Object;
+					oArgs.pid = argobj.pid;
+					var oButton = document.getElementById(argobj.pid+"_nextbutton");
+					if(oButton==null) return false;
+					oButton.style.display = "none";
+					return true;
+                }
+                ]]>
+            </body>
+        </method>
+		<method name="GetProperty" label="GetProperty" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[
+				function GetProperty(argobj)
+				{
+					if(argobj.pid==null || argobj.property==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					switch(argobj.property.toLowerCase()) {
+						case "lastitem":			g_vPropertyValue = oCurObj.getAttribute("last"); 	break;
+						case "nextitem":			g_vPropertyValue = oCurObj.getAttribute("item"); 	break;
+						case "totalitems":			g_vPropertyValue = oCurObj.getAttribute("total"); 	break;
+						default: return true;
+					}
+					return true;
+				}
+				]]>
+			</body>
+		</method>
+	</methods>
+
+
+
+
+
+
+
+<!--
+	<methods>
+		<method name="Constructor" label="Constructor" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function Constructor(argobj)
+                {
+					if(argobj.pid==null) return false;
+					if(document.getElementById(argobj.pid)==null) return false;
+					var curObj = document.getElementById(argobj.pid);
+					if(g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']")==null) return false;
+					var params = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+					var a1 = params.selectSingleNode("auto").firstChild.nodeValue=="yes" ? true : false;
+					var a2 = params.selectSingleNode("on_button").firstChild.nodeValue=="yes" ? true : false;
+					var a3 = params.selectSingleNode("on_link").firstChild.nodeValue=="yes" ? true : false;
+					var eff = params.selectSingleNode("eff").firstChild.nodeValue=="yes" ? true : false;
+					if(eff) {
+						curObj.setAttribute("eff","1");
+						curObj.setAttribute("trans", params.selectSingleNode("trans").firstChild.nodeValue);
+						curObj.setAttribute("dur", params.selectSingleNode("durat").firstChild.nodeValue);
+					}
+					if(a1) {
+						curObj.setAttribute("iorder","auto");
+						curObj.setAttribute("idelay",params.selectSingleNode("delay_time").firstChild.nodeValue);
+					}
+					if(a2) curObj.setAttribute("iorder","button");
+					if(a3) curObj.setAttribute("iorder","link");
+					var tags = curObj.getElementsByTagName("table");
+					var items = new Array();
+					for(var i=0;i<tags.length;i++) {
+						if(tags[i].getAttribute("id").indexOf(argobj.pid+"_item_")!=-1) pushArray(items, tags[i].getAttribute("id"));
+					}
+					curObj.setAttribute("itemlist", items.join("~"));
+					CallMethod("003_blocklist", "ShowItem", argobj);
+					return true;
+                }
+                ]]>
+            </body>
+        </method>
+		<method name="ShowItem" label="ShowItem" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function ShowItem(argobj)
+                {
+                    if(argobj.pid==null) return false;
+					if(document.getElementById(argobj.pid)==null) return false;
+					var curObj = document.getElementById(argobj.pid);
+					if(curObj.getAttribute("itemlist")==null) return false;
+					var eff = curObj.getAttribute("eff")=="1" ? true : false;
+					var iorder = curObj.getAttribute("iorder");
+					if(iorder!="auto") CallMethod("003_blocklist", "HideNextButton", argobj);
+					var items = curObj.getAttribute("itemlist").split("~");
+					var curitem = shiftArray(items);
+					if(items.length!=0) {
+						curObj.setAttribute("itemlist", items.join("~"));
+					} else {
+						curObj.removeAttribute("itemlist");
+					}
+					if(document.getElementById(curitem)==null) return false;
+					curitem = document.getElementById(curitem);
+					if(g_isMSIE){
+						if((curitem.filters[0]!=null)) {
+							curitem.filters[0].Apply();
+							curitem.style.visibility = 'visible';
+							curitem.filters[0].Play();
+						} else {
+							curitem.style.visibility = 'visible';
+						}
+					} else {
+						curitem.style.visibility = 'visible';
+					}
+					FireEvent(argobj.pid,"onDisplayItem");
+					if(document.getElementById(argobj.pid)==null) return false;
+					if(iorder=="auto" && curObj.getAttribute("itemlist")!=null) {
+						var delay = parseInt(curObj.getAttribute("idelay"),10);
+						if(isNaN(delay)) delay = 2000;
+						CreateTimeActionMethod("003_blocklist", "ShowItem", null, delay, argobj);
+					} else {
+						if(curObj.getAttribute("itemlist")!=null) {
+							if(eff) {
+								var delay = parseInt(curObj.getAttribute("dur"),10)*1000;
+								CreateTimeActionMethod("003_blocklist", "ShowNextButton", null, delay, argobj);
+							} else {
+								CallMethod("003_blocklist", "ShowNextButton", argobj);
+							}
+						}
+					}
+					return true;
+                }
+                ]]>
+            </body>
+        </method>
+		<method name="ShowNextButton" label="ShowNextButton" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function ShowNextButton(argobj)
+                {
+                    if(argobj.pid==null) return false;
+					if(document.getElementById(argobj.pid)==null) return false;
+					if(document.getElementById(argobj.pid+"_nextbutton")==null) return false;
+					document.getElementById(argobj.pid+"_nextbutton").style.display = g_isMSIE ? "inline" : "block";
+					return true;
+                }
+                ]]>
+            </body>
+        </method>
+		<method name="HideNextButton" label="HideNextButton" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function HideNextButton(argobj)
+                {
+                    if(argobj.pid==null) return false;
+					if(document.getElementById(argobj.pid)==null) return false;
+					if(document.getElementById(argobj.pid+"_nextbutton")==null) return false;
+					document.getElementById(argobj.pid+"_nextbutton").style.display = "none";
+					return true;
+                }
+                ]]>
+            </body>
+        </method>
+	</methods> -->
+</params>

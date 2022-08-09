@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+'*	003_balloon.xml
+'*	Copyright (c) Websoft, 2006.  All rights reserved.
+-->
+<params>
+	<object>
+		<label>Convex Balloon</label>
+		<width>250</width>
+		<height>140</height>
+		<description>Convex Balloon - with rounded corners and no border</description>
+	</object>
+	<page name=" Parameters " w="196" h="110">
+		<param type="label" text="Balloon color:" x="10" y="11" w="100" h="13"/>
+		<param type="select" id="balloon_profile" text="yellow" def="yellow" x="110" y="10" w="90" h="13">
+			<items>
+				<item id="grey" label="Grey"/>
+				<item id="brown" label="Brown"/>			
+				<item id="deeppink" label="Crimson"/>	
+				<item id="red2" label="Deep red"/>
+				<item id="red" label="Red"/>
+				<item id="orange" label="Orange"/>
+				<item id="yellow" label="Yellow"/>
+				<item id="green" label="Green"/>
+				<item id="olive" label="Olive"/>
+				<item id="blue_green" label="Teal"/>
+				<item id="turq" label="Turquoise"/>
+				<item id="blue" label="Blue"/>
+				<item id="dark_blue" label="Dark Blue"/>
+				<item id="steel_blue" label="Steel blue"/>
+				<item id="violet" label="Violet"/>
+				<item id="pink" label="Pink"/>
+			</items>
+		</param>
+		<param type="label" text="Arrow:" x="10" y="27" w="100" h="13"/>
+		<param type="select" id="arrow" text="bl" def="bl" x="110" y="25" w="90" h="13">
+			<items>
+				<item id="no" label="No arrow"/>
+				<item id="tl" label="top-left"/>
+				<item id="tc" label="top-center"/>
+				<item id="tr" label="top-right"/>
+				<item id="rt" label="right-top"/>
+				<item id="rm" label="right-middle"/>
+				<item id="rb" label="right-bottom"/>
+				<item id="br" label="bottom-right"/>
+				<item id="bc" label="bottom-center"/>
+				<item id="bl" label="bottom-left"/>
+				<item id="lb" label="left-bottom"/>
+				<item id="lm" label="left-middle"/>
+				<item id="lt" label="left-top"/>
+			</items>
+		</param>
+		<param type="line" x="9" y="48" w="192" h="1"/>
+		<param type="label" text="Balloon text:" x="10" y="53" w="136" h="13"/>
+		<param type="textedit" id="balloon_text" text="Balloon text goes here" def="Balloon text goes here" x="10" y="66" w="174" h="13" />
+		<param type="label" text="Balloon inner margin:" x="10" y="84" w="100" h="13"/>
+		<param type="edit" id="balloon_margin" text="5" def="5" x="110" y="83" w="18" h="13" />
+		<param type="label" text="pixels" x="130" y="84" w="60" h="13"/>
+	</page>
+</params>
