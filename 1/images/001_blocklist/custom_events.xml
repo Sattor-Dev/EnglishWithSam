@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<events>
-	<event>
-		<name>onDisplayItem</name>
-		<label>On Display Item</label>
-	</event>
-</events>
