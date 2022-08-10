@@ -1,0 +1,25 @@
+<course2>
+	<aicc_code/>
+	<aicc_name>English with Sam</aicc_name>
+	<aicc_description/>
+	<modules>
+		<module>
+			<name>1</name>
+			<folder_id>0</folder_id>
+			<file>1\1.xml</file>
+			<aicc_code/>
+			<aicc_name>1</aicc_name>
+			<aicc_description/>
+			<aicc_maxmark/>
+			<aicc_reqmark/>
+		</module>
+	</modules>
+	<windows>
+		<window>
+			<module>1</module>
+			<zoom>100</zoom>
+			<active>true</active>
+			<slide>SLIDE_16</slide>
+		</window>
+	</windows>
+</course2>

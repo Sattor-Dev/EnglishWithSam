@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Course file, saved 08-Aug-22 9:23:30 PM by hp using CourseLab 170305 -->
+<course2>
+<aicc_code></aicc_code>
+<aicc_name>English with Sam</aicc_name>
+<aicc_description></aicc_description>
+<modules>
+<module>
+<name>1</name>
+<folder_id>0</folder_id>
+<file>1\1.xml</file>
+<aicc_code></aicc_code>
+<aicc_name>EnglishWithSam</aicc_name>
+<aicc_description></aicc_description>
+<aicc_maxmark></aicc_maxmark>
+<aicc_reqmark></aicc_reqmark>
+</module>
+</modules>
+<windows>
+<window>
+<module>1</module>
+<zoom>100</zoom>
+<active>true</active>
+<slide>SLIDE_5</slide>
+</window>
+</windows>
+</course2>
