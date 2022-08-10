@@ -1,0 +1,6 @@
+
+/* Triangle arrows */
+.arrow-up, .arrow-down { font-size: 0; line-height: 0; border-right-color: pink; border-left-color: pink; filter: chroma(color=pink); }
+.arrow-left, .arrow-right { font-size: 0; line-height: 0; border-top-color: pink; border-bottom-color: pink; filter: chroma(color=pink); }
+
+div.003_popup div.arrows-clip { clip: rect(5px 17px 17px 5px); }
