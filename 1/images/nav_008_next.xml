@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+'*	nav_008_next.xml
+'*	Copyright (c) Websoft, 2007.  All rights reserved.
+-->
+<params>
+	<object>
+		<label>Next Slide Button</label>
+		<width>75</width>
+		<height>25</height>
+		<description>Next Slide Button</description>
+	</object>
+	<page name=" Parameters " w="260" h="150">
+		<param type="line" x="8" y="12" w="244" h="79"/>
+		<param type="label" text=" " x="11" y="6" w="6" h="13"/>
+		<param type="check" id="standard" text="Use default button set" def="yes" x="15" y="6" w="85" h="13">
+			<events>
+				<event name="check" target="lab_n1_img" action="disable" />
+				<event name="check" target="lab_n2_img" action="disable" />
+				<event name="check" target="lab_n3_img" action="disable" />
+				<event name="check" target="lab_n4_img" action="disable" />
+				<event name="check" target="n1_img" action="disable" />
+				<event name="check" target="n2_img" action="disable" />
+				<event name="check" target="n3_img" action="disable" />
+				<event name="check" target="n4_img" action="disable" />
+				<event name="uncheck" target="lab_n1_img" action="enable" />
+				<event name="uncheck" target="lab_n2_img" action="enable" />
+				<event name="uncheck" target="lab_n3_img" action="enable" />
+				<event name="uncheck" target="lab_n4_img" action="enable" />
+				<event name="uncheck" target="n1_img" action="enable" />
+				<event name="uncheck" target="n2_img" action="enable" />
+				<event name="uncheck" target="n3_img" action="enable" />
+				<event name="uncheck" target="n4_img" action="enable" />
+			</events>
+		</param>
+		<param type="label" id="lab_n1_img" text="Enabled button:" x="15" y="25" w="130" h="13"/>
+		<param type="file" id="n1_img" text="" def="" x="125" y="24" w="100" h="13"/>
+		<param type="label" id="lab_n2_img" text="OnMouseOver button:" x="15" y="41" w="110" h="13"/>
+		<param type="file" id="n2_img" text="" def="" x="125" y="40" w="100" h="13"/>
+		<param type="label" id="lab_n3_img" text="Disabled button:" x="15" y="56" w="110" h="13"/>
+		<param type="file" id="n3_img" text="" def="" x="125" y="55" w="100" h="13"/>
+		<param type="label" id="lab_n4_img" text="OnClick button:" x="15" y="72" w="110" h="13"/>
+		<param type="file" id="n4_img" text="" def="" x="125" y="71" w="100" h="13"/>
+		<param type="label" text="Enabled button tooltip:" x="10" y="96" w="110" h="13"/>
+		<param type="edit" id="alt_enabled" text="no" def="Jump to next slide" x="125" y="95" w="125" h="13"/>
+		<param type="label" text="Disabled button tooltip:" x="10" y="112" w="110" h="13"/>
+		<param type="edit" id="alt_disabled" text="no" def="Jump to next slide disabled" x="125" y="111" w="125" h="13"/>
+		<param type="check" id="nav_lock" text="Strict Navigation mode" def="yes" x="10" y="128" w="184" h="13"/>
+    </page>
+	<methods>
+		<method name="Constructor" label="Constructor" access="private">
+            <params>
+            </params>
+            <body>
+                <![CDATA[
+                function Constructor(argobj)
+                {
+					if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var oParams = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+					var bNavLock = oParams.selectSingleNode("nav_lock").text=="yes" ? true : false;
+					oCurObj.setAttribute("state","enabled");
+					oCurObj.setAttribute("navlock", bNavLock ? "1" : "0");
+					AddEvtHandler("EVENT_SLIDE_OPENED", "nav_008_next", argobj.pid);
+					AddEvtHandler("EVENT_SLIDE_COMPLETE", "nav_008_next", argobj.pid);
+					AddEvtHandler("EVENT_NAVIGATION", "nav_008_next", argobj.pid);
+					return true;
+				}
+				]]>
+			</body>
+		</method>
+		<method name="HandleEvt" label="HandleEvt" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[
+				function HandleEvt(oEvtHandler, oArg)
+				{
+					var argobj = new Object;
+					argobj.pid = oEvtHandler.sTargetId;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var sCurrentSlideId = g_oSlide.getAttribute("id");
+					var sSavedSlideId = oCurObj.getAttribute("sid");
+					if(sSavedSlideId==null) sSavedSlideId = "";
+					switch (oEvtHandler.sEvt) {
+						case "EVENT_SLIDE_OPENED":
+							if(sSavedSlideId!=sCurrentSlideId) oCurObj.setAttribute("sid","");
+							if(oCurObj.getAttribute("navlock")=="1")
+							{
+								CallMethod("nav_008_next","DisableAccess",argobj);
+							} else {
+								CallMethod("nav_008_next","EnableAccess",argobj);
+							}
+							break;
+						case "EVENT_SLIDE_COMPLETE":
+							if(oCurObj.getAttribute("navlock")=="1" && sSavedSlideId=="") {
+								oCurObj.setAttribute("sid","");
+								CallMethod("nav_008_next","EnableAccess",argobj);
+							}
+							break;
+						case "EVENT_NAVIGATION":
+							if(oArg==null) return false;
+							if(oArg.sTargets=="next" || oArg.sTargets=="all" || oArg.sTargets=="buttons") {
+								if(oArg.sAction=="on") {
+									oCurObj.setAttribute("sid","");
+									CallMethod("nav_008_next","EnableAccess",argobj);
+								}
+								if(oArg.sAction=="off") {
+									oCurObj.setAttribute("sid",sCurrentSlideId);
+									CallMethod("nav_008_next","DisableAccess",argobj);
+								}
+							}
+							break;
+						default:
+							break;
+					}
+					return true;
+				}
+				]]>
+			</body>
+		</method>
+		<method name="DisableAccess" label="DISABLE ACCESS" access="public">
+			<params>
+			</params>
+			<body>
+				<![CDATA[
+				function DisableAccess(argobj)
+				{
+					if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					if(document.getElementById(argobj.pid+"_NextEnabled")==null || document.getElementById(argobj.pid+"_NextDisabled")==null) return false;
+					document.getElementById(argobj.pid+"_NextEnabled").style.display = "none";
+					document.getElementById(argobj.pid+"_NextDisabled").style.display = g_isMSIE ? "inline" : "block";
+					oCurObj.setAttribute("state","disabled");
+					return true;
+				}
+				]]>
+			</body>
+		</method>
+		<method name="EnableAccess" label="ENABLE ACCESS" access="public">
+			<params>
+			</params>
+			<body>
+				<![CDATA[
+				function EnableAccess(argobj)
+				{
+					if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					if(g_oSlide.nextSibling==null) {
+						CallMethod("nav_008_next","DisableAccess",argobj);
+						return false;
+					}
+					if(g_oSlide.nextSibling.nodeType!=1) {
+						if(g_oSlide.nextSibling.nextSibling==null) {
+							CallMethod("nav_008_next","DisableAccess",argobj);
+							return false;
+						}
+					}
+					if(document.getElementById(argobj.pid+"_NextEnabled")==null || document.getElementById(argobj.pid+"_NextDisabled")==null) return false;
+					document.getElementById(argobj.pid+"_NextDisabled").style.display = "none";
+					document.getElementById(argobj.pid+"_NextEnabled").style.display = g_isMSIE ? "inline" : "block";
+					oCurObj.setAttribute("state","enabled");
+					return true;
+				}
+				]]>
+			</body>
+		</method>
+		<method name="JumpNext" label="JumpNext" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[
+				function JumpNext(argobj)
+				{
+					if(argobj.pid==null) return false;
+					if(g_oSlide.nextSibling==null) return false;
+					if(g_oSlide.nextSibling.nodeType!=1) {
+						if(g_oSlide.nextSibling.nextSibling==null) return false;
+					}
+					CallMethod("nav_008_next","DisableAccess",argobj);
+					NextSlide();
+					return true;
+				}
+				]]>
+			</body>
+		</method>
+		<method name="GetProperty" label="GetProperty" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[
+				function GetProperty(argobj)
+				{
+					if(argobj.pid==null || argobj.property==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					switch(argobj.property.toLowerCase()) {
+						case "disabled":	g_vPropertyValue = oCurObj.getAttribute("state")=="disabled" ? "1" : "0";	break;
+						default: return true;
+					}
+					return true;
+				}
+				]]>
+			</body>
+		</method>
+	</methods>
+</params>

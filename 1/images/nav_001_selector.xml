@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+'*	nav_001_selector.xml
+'*	Copyright (c) Websoft, 2007.  All rights reserved.
+-->
+<params>
+	<object>
+		<label>Navigation Menu</label>
+		<width>200</width>
+		<height>20</height>
+		<description>Navigation Menu. Enables quick jump to slides.</description>
+	</object>
+	<page name=" Parameters " w="220" h="154">
+		<param type="label" text="Background color:" x="10" y="10" w="110" h="13"/>
+		<param type="color" id="input_bg_color" text="#FFFFFF" def="#FFFFFF" x="120" y="9" w="45" h="13"/>
+		<param type="label" text="Font:" x="10" y="26" w="110" h="13"/>
+		<param type="select" id="input_font" text="Tahoma" def="Tahoma" x="120" y="25" w="80" h="13">
+			<items>
+				<item id="Arial" label="Arial"/>
+				<item id="Courier" label="Courier"/>
+				<item id="Tahoma" label="Tahoma"/>
+				<item id="Times" label="Times"/>
+				<item id="Verdana" label="Verdana"/>
+				<item id="Courier" label="Courier"/>
+			</items>
+		</param>
+		<param type="label" text="Font size:" x="10" y="42" w="110" h="13"/>
+		<param type="edit" id="input_font_size" text="11" def="11" x="120" y="41" w="18" h="13"/>
+		<param type="label" text="pixels" x="142" y="42" w="50" h="13"/>
+		<param type="label" text="Font weight:" x="10" y="58" w="110" h="13"/>
+		<param type="select" id="input_font_weight" text="normal" def="normal" x="120" y="57" w="80" h="13">
+			<items>
+				<item id="normal" label="Normal"/>
+				<item id="bold" label="Bold"/>
+			</items>
+		</param>
+		<param type="label" text="Font style:" x="10" y="74" w="110" h="13"/>
+		<param type="select" id="input_font_style" text="normal" def="normal" x="120" y="73" w="80" h="13">
+			<items>
+				<item id="normal" label="Normal"/>
+				<item id="italic" label="Italic"/>
+			</items>
+		</param>
+		<param type="label" text="Font color:" x="10" y="90" w="110" h="13"/>
+		<param type="color" id="input_font_color" text="#000000" def="#000000" x="120" y="89" w="45" h="13"/>
+		<param type="check" id="hierarchy" text="Show slides hierarchy" def="yes" x="10" y="106" w="124" h="13"/>
+		<param type="check" id="nav_lock" text="Strict Navigation mode" def="yes" x="10" y="122" w="184" h="13"/>
+		<param type="label" text="Strict slide order message:" x="10" y="139" w="110" h="13"/>
+		<param type="edit" id="msg" text="" def="You cannot jump to this slide until you visit previous slides" x="120" y="137" w="90" h="13"/>
+	</page>
+	<methods>
+		<method name="Constructor" label="Constructor" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[
+				function Constructor(argobj)
+				{
+					if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var oCurSelector = document.getElementById(argobj.pid+"_selector");
+					if(oCurSelector==null) return false;
+					var oParams = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+					var bHierarchy = oParams.selectSingleNode("hierarchy").text=="yes" ? true : false;
+					var bNavLock = oParams.selectSingleNode("nav_lock").text=="yes" ? true : false;
+					var oOptions = oCurSelector.options;
+					while(oOptions.length>0) oCurSelector.remove(0);
+					var	oSlides = g_oSlides.selectNodes("slide");
+					var oSlide,sName,sId,sIndent,oOption;
+					for(var i=0; i<oSlides.length;i++) {
+						oSlide = oSlides[i];
+						sId = oSlide.getAttribute("id");
+						sIndent = oSlide.getAttribute("indent");
+						sName = "";
+						if(sIndent!=null && bHierarchy) {
+							var nIndent = parseInt(sIndent);
+							for(var j=0; j<nIndent; j++) {
+								sName += "-";
+							}
+							sName += " ";
+						}
+						sName += oSlide.getAttribute("name");
+						oOption = document.createElement("option");
+						//oOptions.add(oOption);
+						oCurSelector.appendChild(oOption);
+						oOption.text = sName;
+						oOption.value = sId;
+					}
+					oCurObj.setAttribute("state","enabled");
+					oCurObj.setAttribute("navig","0");
+					if(bNavLock) {
+						AddEvtHandler("EVENT_SLIDE_OPENED", "nav_001_selector", argobj.pid);
+						AddEvtHandler("EVENT_SLIDE_COMPLETE", "nav_001_selector", argobj.pid);
+					}
+					AddEvtHandler("EVENT_NAVIGATION", "nav_001_selector", argobj.pid);
+					return true;
+				}
+				]]>
+			</body>
+		</method>
+		<method name="HandleEvt" label="HandleEvt" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[
+				function HandleEvt(oEvtHandler)
+				{
+					var argobj = new Object;
+					argobj.pid = oEvtHandler.sTargetId;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var sCurrentSlideId = g_oSlide.getAttribute("id");
+					var sSavedSlideId = oCurObj.getAttribute("sid");
+					if(sSavedSlideId==null) sSavedSlideId = "";
+					switch(oEvtHandler.sEvt) {
+						case "EVENT_SLIDE_OPENED":
+							if(sSavedSlideId!=sCurrentSlideId) oCurObj.setAttribute("sid","");
+							var oCurSelector = document.getElementById(argobj.pid + "_selector");
+							var oOptions = oCurSelector.options;
+							for(var i=0; i<oOptions.length; i++) {
+								if(oOptions[i].value == sCurrentSlideId) {
+									oCurSelector.selectedIndex = i;
+									oOptions[i].setAttribute("selected","1");
+								} else {
+									oOptions[i].removeAttribute("selected");
+								}
+							}
+							CallMethod("nav_001_selector","DisableSelector",argobj);
+							break;
+						case "EVENT_SLIDE_COMPLETE":
+							if(oCurObj.getAttribute("state")=="disabled" && sSavedSlideId=="") {
+								oCurObj.setAttribute("sid","");
+								CallMethod("nav_001_selector","EnableSelector",argobj);
+							}
+							return false;
+							break;
+						case "EVENT_NAVIGATION":
+							if(oArg==null) return false;
+							if(oArg.sTargets=="selector" || oArg.sTargets=="all") {
+								if(oArg.sAction=="on" && oCurObj.getAttribute("state")=="disabled") {
+									oCurObj.setAttribute("sid","");
+									CallMethod("nav_001_selector","EnableSelector",argobj);
+								}
+								if(oArg.sAction=="off" && oCurObj.getAttribute("state")=="enabled") {
+									oCurObj.setAttribute("sid",sCurrentSlideId);
+									CallMethod("nav_001_selector","DisableSelector",argobj);
+								}
+							}
+							break;
+						default:
+							break;
+					}
+				}
+				]]>
+			</body>
+		</method>
+		<method name="DisableSelector" label="DISABLE ACCESS" access="public">
+			<params>
+			</params>
+			<body>
+				<![CDATA[
+				function DisableSelector(argobj)
+				{
+					if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					if(oCurObj.getAttribute("state")=="disabled") return false;
+					var oCurSelector = document.getElementById(argobj.pid+"_selector");
+					if(oCurSelector==null) return false;
+					oCurSelector.disabled = true;
+					oCurObj.setAttribute("state","disabled");
+					return true;
+				}
+				]]>
+			</body>
+		</method>
+		<method name="EnableSelector" label="ENABLE ACCESS" access="public">
+			<params>
+			</params>
+			<body>
+				<![CDATA[
+				function EnableSelector(argobj)
+				{
+					if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					if(oCurObj.getAttribute("state")=="enabled") return false;
+					var oCurSelector = document.getElementById(argobj.pid+"_selector");
+					if(oCurSelector==null) return false;
+					oCurSelector.disabled = false;
+					oCurObj.setAttribute("state","enabled");
+					return true;
+				}
+				]]>
+			</body>
+		</method>
+		<method name="GetProperty" label="GetProperty" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[
+				function GetProperty(argobj)
+				{
+					if(argobj.pid==null || argobj.property==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var oCurSelector = document.getElementById(argobj.pid+"_selector");
+					if(oCurSelector==null) return false;
+					var oOptions = oCurSelector.options;
+					if(oOptions==null) return true;
+					switch(argobj.property.toLowerCase()) {
+						case "disabled":		g_vPropertyValue = oCurSelector.disabled ? "1" : "0";			break;
+						case "selectedid":		g_vPropertyValue = oOptions[oCurSelector.selectedIndex].value; 	break;
+						case "selectedname":	g_vPropertyValue = oOptions[oCurSelector.selectedIndex].text; 	break;
+						case "selectednumber":	g_vPropertyValue = oCurSelector.selectedIndex+1; 	break;
+						case "totalentries":	g_vPropertyValue = oOptions.length; 	break;
+						default: return true;
+					}
+					return true;
+				}
+				]]>
+			</body>
+		</method>
+		<method name="JumpToSlide" label="JumpToSlide" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[
+				function JumpToSlide(argobj)
+				{
+					if(argobj.pid==null) return false;
+					var oCurSelector = document.getElementById(argobj.pid+"_selector");
+					var oOptions = oCurSelector.options;
+					var sJumpto = oOptions[oCurSelector.selectedIndex].value;
+					var oParams = g_oParams.selectSingleNode("./param[@objectid='"+argobj.pid+"']");
+					var sMsg = oParams.selectSingleNode("msg").text;
+					if(sMsg==null) sMsg = "You cannot jump to this slide until you visit previous slides";
+					if(g_bStrictOrder) {
+						var oSlide = g_oSlides.selectSingleNode("slide[@id='"+sJumpto+"']");
+						if(!SCOIsSlideVisited(oSlide)) {
+							var oTmp = oSlide.previousSibling;
+							if(oTmp!=null) {
+								if(oTmp.nodeType!=1) {
+									var iLimit = g_oSlides.selectNodes("slide").length*2;
+									var iCnt = 0;
+									while(oTmp.nodeType!=1 && oTmp.nodeName!="slide") {
+										oTmp = oTmp.previousSibling;
+										if(oTmp==null) break;
+										iCnt++;
+										if(iCnt>iLimit) break;
+									}
+								}
+								if(oTmp!=null) {
+									if(!SCOIsSlideVisited(oTmp)) {
+										var sCurrentSlideId = g_oSlide.getAttribute("id");
+										var	oSlides = g_oSlides.selectNodes("slide");
+										var sId;
+										for(var i=0; i<oOptions.length;i++) {
+											if(oOptions[i].value == sCurrentSlideId) {
+												oCurSelector.selectedIndex = i;
+												break;
+											}
+										}
+										alert(sMsg);
+										return false;
+									}
+								}
+							}
+						}
+					}
+					OpenSlideById(sJumpto);
+					return true;
+				}
+				]]>
+			</body>
+		</method>
+	</methods>
+</params>

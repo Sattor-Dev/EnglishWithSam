@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+'*	media_004_java.xml 
+'*	Copyright (c) Websoft, 2006.  All rights reserved.
+-->
+<params>
+	<object>
+		<label>Java applet</label>
+		<width>240</width>
+		<height>240</height>
+		<description>Java applet</description>
+	</object>
+    <page name=" Files " w="230" h="150">
+		<param type="line" x="5" y="5" w="220" h="38"/>
+		<param type="line" x="5" y="45" w="220" h="100"/>
+		<param type="check" id="use_jar" text="JAR-archive:" def="no" x="10" y="9" w="70" h="13">
+			<events>
+				<event name="check" target="applet_uri" action="enable" />
+				<event name="check" target="label_stclass" action="enable" />
+				<event name="check" target="class_start" action="enable" />
+				<event name="check" target="label_class" action="disable" />
+				<event name="check" target="class_uri" action="disable" />
+				<event name="check" target="lab_file_list" action="disable" />
+				<event name="check" target="file_list" action="disable" />
+				<event name="uncheck" target="applet_uri" action="disable" />
+				<event name="uncheck" target="lab_file_list" action="enable" />
+				<event name="uncheck" target="file_list" action="enable" />
+				<event name="uncheck" target="label_stclass" action="disable" />
+				<event name="uncheck" target="class_start" action="disable" />
+				<event name="uncheck" target="label_class" action="enable" />
+				<event name="uncheck" target="class_uri" action="enable" />
+			</events>
+		</param>
+		<param type="file" id="applet_uri" text="" def="" x="80" y="9" w="120" h="13"/>
+		<param type="label" id="label_stclass" text="Start file:" def="no" x="15" y="25" w="70" h="13"/>
+		<param type="edit" id="class_start" text="" def="" x="80" y="25" w="135" h="13"/>
+
+		<param type="label" id="label_class" text="Class file:" def="no" x="15" y="51" w="70" h="13"/>
+		<param type="file" id="class_uri" text="" def="" x="80" y="50" w="120" h="13"/>
+
+		<param type="label" id="lab_file_list" text="Additional files:" x="10" y="67" w="100" h="13"/>
+		<param type="list" id="file_list" text="" def="" x="10" y="65" w="210" h="74">
+			<params w="230" h="50" label="File">
+				<param type="label" text="File:" x="10" y="10" w="90" h="13"/>
+				<param type="file" id="file_uri" text="File" def="" x="100" y="9" w="103" h="13"/>
+				<param type="line" x="10" y="26" w="210" h="1"/>
+				<param type="button" id="OK" text="OK" x="115" y="34" w="50" h="14"/>
+				<param type="button" id="CANCEL" text="Cancel" x="170" y="34" w="50" h="14"/>
+			</params>
+		</param>
+    </page>
+    <page name=" Parameters " w="230" h="150">
+		<param type="label" text="Horizontal margin:" x="10" y="10" w="136" h="13"/>
+		<param type="edit" id="applet_hspace" text="0" def="0" x="110" y="9" w="18" h="13"/>
+		<param type="label" text="pixels" x="133" y="10" w="68" h="13"/>
+		<param type="label" text="Vertical margin:" x="10" y="26" w="136" h="13"/>
+		<param type="edit" id="applet_vspace" text="0" def="0" x="110" y="25" w="18" h="13"/>
+		<param type="label" text="pixels" x="133" y="26" w="68" h="13"/>
+		<param type="label" text="Alt text:" x="10" y="42" w="100" h="13"/>
+		<param type="edit" id="applet_alt" text="Java applet" def="Java applet" x="110" y="41" w="90" h="13"/>
+		<param type="label" id="lab_file_list" text="Applet parameters:" x="10" y="58" w="100" h="13"/>
+		<param type="list" id="param_list" text="" def="" x="10" y="57" w="210" h="86">
+			<params w="230" h="70" label="Parameter">
+				<param type="label" text="Name:" x="10" y="10" w="90" h="13"/>
+				<param type="edit" id="a_param" text="Name" def="" x="100" y="9" w="103" h="13"/>
+				<param type="label" text="Value:" x="10" y="26" w="90" h="13"/>
+				<param type="edit" id="a_param_value" text="Value" def="" x="100" y="25" w="103" h="13"/>
+				<param type="line" x="10" y="42" w="210" h="1"/>
+				<param type="button" id="OK" text="OK" x="115" y="50" w="50" h="14"/>
+				<param type="button" id="CANCEL" text="Cancel" x="170" y="50" w="50" h="14"/>
+			</params>
+		</param>
+    </page>
+    <page name=" Java " w="230" h="150">
+		<param type="label" text="Java machine:" x="10" y="10" w="136" h="13"/>
+		<param type="select" id="jmachine" def="sun" x="110" y="9" w="110" h="13">
+			<items>
+				<item id="sun" label="Sun Java Machine"/>
+				<item id="msjvm" label="Microsoft JVM"/>
+			</items>
+		</param>
+	</page>
+</params>

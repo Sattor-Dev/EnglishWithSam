@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+'*	nav_011_sound.xml
+'*	Copyright (c) Websoft, 2007.  All rights reserved.
+-->
+<params>
+	<object>
+		<label>Main sound On/Off Button</label>
+		<width>27</width>
+		<height>24</height>
+		<description>Main sound On/Off Button</description>
+	</object>
+	<page name="Parameters" w="260" h="200">
+		<param type="check" id="standard" text="Use default button set" def="yes" x="10" y="9" w="240" h="13">
+			<events>
+				<event name="check" target="lab_n1_img" action="disable"/>
+				<event name="check" target="lab_n2_img" action="disable"/>
+				<event name="check" target="lab_n3_img" action="disable"/>
+				<event name="check" target="lab_n4_img" action="disable"/>
+				<event name="check" target="n1_img" action="disable"/>
+				<event name="check" target="n2_img" action="disable"/>
+				<event name="check" target="n3_img" action="disable"/>
+				<event name="check" target="n4_img" action="disable"/>
+				<event name="check" target="lab_tabcolor" action="enable"/>
+				<event name="check" target="tabcolor" action="enable"/>
+				<event name="uncheck" target="lab_n1_img" action="enable"/>
+				<event name="uncheck" target="lab_n2_img" action="enable"/>
+				<event name="uncheck" target="lab_n3_img" action="enable"/>
+				<event name="uncheck" target="lab_n4_img" action="enable"/>
+				<event name="uncheck" target="n1_img" action="enable"/>
+				<event name="uncheck" target="n2_img" action="enable"/>
+				<event name="uncheck" target="n3_img" action="enable"/>
+				<event name="uncheck" target="n4_img" action="enable"/>
+				<event name="uncheck" target="lab_tabcolor" action="disable"/>
+				<event name="uncheck" target="tabcolor" action="disable"/>
+			</events>
+		</param>
+		<param type="line" x="10" y="23" w="240" h="1"/>
+		<param type="label" id="lab_n1_img" text="Enabled Off button:" x="20" y="29" w="110" h="13"/>
+		<param type="file" id="n1_img" text="" def="" x="130" y="28" w="103" h="13"/>
+		<param type="label" id="lab_n2_img" text="MouseOver Off button:" x="20" y="45" w="110" h="13"/>
+		<param type="file" id="n2_img" text="" def="" x="130" y="44" w="103" h="13"/>
+		<param type="label" id="lab_n3_img" text="Enabled On button:" x="20" y="61" w="110" h="13"/>
+		<param type="file" id="n3_img" text="" def="" x="130" y="60" w="103" h="13"/>
+		<param type="label" id="lab_n4_img" text="MouseOver On button:" x="20" y="77" w="110" h="13"/>
+		<param type="file" id="n4_img" text="" def="" x="130" y="76" w="103" h="13"/>
+		<param type="label" id="lab_tabcolor" text="Color scheme:" x="10" y="97" w="120" h="13"/>
+		<param type="select" id="tabcolor" text="" def="orange" x="130" y="96" w="120" h="13">
+			<items>
+				<item id="orange" label="Orange"/>
+				<item id="lightblue" label="Lightblue"/>
+				<item id="turquoise" label="Turquoise"/>
+				<item id="olive" label="Olive"/>
+			</items>
+		</param>
+		<param type="label" text="On button tooltip:" x="10" y="113" w="120" h="13"/>
+		<param type="edit" id="alt_on" text="" def="Disable sound" x="130" y="112" w="120" h="13"/>
+		<param type="label" text="Off button tooltip:" x="10" y="129" w="120" h="13"/>
+		<param type="edit" id="alt_off" text="" def="Enable sound" x="130" y="128" w="120" h="13"/>
+	</page>
+	<page name="Sound" w="260" h="200">
+		<param type="line" id="" text="" def="" x="10" y="23" w="240" h="1"/>
+		<param type="check" id="sound.enabled" text="Use sound effects" def="no" x="10" y="9" w="240" h="13">
+			<events>
+				<event name="check" target="lab.sound.scheme" action="show"/>
+				<event name="check" target="sound.scheme" action="show"/>
+				<event name="check" target="sound.user" action="show"/>
+				<event name="check" target="lab.sound.file.over" action="show"/>
+				<event name="check" target="sound.file.over" action="show"/>
+				<event name="check" target="lab.sound.file.over.user" action="show"/>
+				<event name="check" target="sound.file.over.user" action="show"/>
+				<event name="check" target="lab.sound.file.click" action="show"/>
+				<event name="check" target="sound.file.click" action="show"/>
+				<event name="check" target="lab.sound.file.click.user" action="show"/>
+				<event name="check" target="sound.file.click.user" action="show"/>
+				<event name="uncheck" target="lab.sound.scheme" action="hide"/>
+				<event name="uncheck" target="sound.scheme" action="hide"/>
+				<event name="uncheck" target="sound.user" action="hide"/>
+				<event name="uncheck" target="lab.sound.file.over" action="hide"/>
+				<event name="uncheck" target="sound.file.over" action="hide"/>
+				<event name="uncheck" target="lab.sound.file.over.user" action="hide"/>
+				<event name="uncheck" target="sound.file.over.user" action="hide"/>
+				<event name="uncheck" target="lab.sound.file.click" action="hide"/>
+				<event name="uncheck" target="sound.file.click" action="hide"/>
+				<event name="uncheck" target="lab.sound.file.click.user" action="hide"/>
+				<event name="uncheck" target="sound.file.click.user" action="hide"/>
+			</events>
+		</param>
+		<param type="label" id="lab.sound.scheme" text="Events with sound:" def="" x="20" y="29" w="100" h="13"/>
+		<param type="select" id="sound.scheme" text="" def="overclick" x="120" y="28" w="130" h="13">
+			<items>
+				<item id="click" label="Click only"/>
+				<item id="overclick" label="Mouseover and click"/>
+				<item id="over" label="Mouseover only"/>
+			</items>
+		</param>
+		<param type="label" id="lab.sound.file.over" text="Mouseover sound:" def="" x="20" y="45" w="100" h="13"/>
+		<param type="select" id="sound.file.over" text="" def="over1" x="120" y="44" w="130" h="13">
+			<items>
+				<item id="over1" label="Standard 1">
+					<events>
+						<event name="selendok" target="lab.sound.file.over.user" action="disable"></event>
+						<event name="selendok" target="sound.file.over.user" action="disable"></event>
+					</events>
+				</item>
+				<item id="over2" label="Standard 2">
+					<events>
+						<event name="selendok" target="lab.sound.file.over.user" action="disable"></event>
+						<event name="selendok" target="sound.file.over.user" action="disable"></event>
+					</events>
+				</item>
+				<item id="over3" label="Standard 3">
+					<events>
+						<event name="selendok" target="lab.sound.file.over.user" action="disable"></event>
+						<event name="selendok" target="sound.file.over.user" action="disable"></event>
+					</events>
+				</item>
+				<item id="over4" label="Standard 4">
+					<events>
+						<event name="selendok" target="lab.sound.file.over.user" action="disable"></event>
+						<event name="selendok" target="sound.file.over.user" action="disable"></event>
+					</events>
+				</item>
+				<item id="custom" label="Use custom sound">
+					<events>
+						<event name="selendok" target="lab.sound.file.over.user" action="enable"></event>
+						<event name="selendok" target="sound.file.over.user" action="enable"></event>
+					</events>
+				</item>
+			</items>
+		</param>
+		<param type="label" id="lab.sound.file.over.user" text="Sound file:" def="" x="20" y="61" w="100" h="13"/>
+		<param type="file" id="sound.file.over.user" text="" def="" x="120" y="60" w="113" h="13"/>
+		<param type="label" id="lab.sound.file.click" text="Click sound:" def="" x="20" y="77" w="100" h="13"/>
+		<param type="select" id="sound.file.click" text="" def="click1" x="120" y="76" w="130" h="13">
+			<items>
+				<item id="click1" label="Standard 1">
+					<events>
+						<event name="selendok" target="lab.sound.file.click.user" action="disable"></event>
+						<event name="selendok" target="sound.file.click.user" action="disable"></event>
+					</events>
+				</item>
+				<item id="click2" label="Standard 2">
+					<events>
+						<event name="selendok" target="lab.sound.file.click.user" action="disable"></event>
+						<event name="selendok" target="sound.file.click.user" action="disable"></event>
+					</events>
+				</item>
+				<item id="click3" label="Standard 3">
+					<events>
+						<event name="selendok" target="lab.sound.file.click.user" action="disable"></event>
+						<event name="selendok" target="sound.file.click.user" action="disable"></event>
+					</events>
+				</item>
+				<item id="click4" label="Standard 4">
+					<events>
+						<event name="selendok" target="lab.sound.file.click.user" action="disable"></event>
+						<event name="selendok" target="sound.file.click.user" action="disable"></event>
+					</events>
+				</item>
+				<item id="custom" label="Use custom sound">
+					<events>
+						<event name="selendok" target="lab.sound.file.click.user" action="enable"></event>
+						<event name="selendok" target="sound.file.click.user" action="enable"></event>
+					</events>
+				</item>
+			</items>
+		</param>
+		<param type="label" id="lab.sound.file.click.user" text="Sound file:" def="" x="20" y="93" w="100" h="13"/>
+		<param type="file" id="sound.file.click.user" text="" def="" x="120" y="92" w="113" h="13"/>
+	</page>
+	<methods>
+		<method name="Constructor" label="_Constructor" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[function Constructor(argobj)
+				{
+					if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var oCurOn = document.getElementById(argobj.pid+"_sound_on");
+					var oCurOff = document.getElementById(argobj.pid+"_sound_off");
+					if(!g_bSoundEnabled) {
+						oCurOn.style.display = "none";
+						oCurOff.style.display = g_isMSIE ? "inline" : "block";
+						EnableSound(false);
+					} else {
+						oCurOff.style.display = "none";
+						oCurOn.style.display = g_isMSIE ? "inline" : "block";
+					}
+					return true;
+				}]]>
+			</body>
+		</method>
+		<method name="toggleSound" label="TOGGLE SOUND" access="public">
+			<params>
+			</params>
+			<body>
+				<![CDATA[function toggleSound(argobj)
+				{
+					if(argobj.pid==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					PlayObjectSound({ pid: argobj.pid, snd: "click" });
+					var oCurOn = document.getElementById(argobj.pid+"_sound_on");
+					var oCurOff = document.getElementById(argobj.pid+"_sound_off");
+					if(oCurOff.style.display=="none") {
+						oCurOn.style.display = "none";
+						oCurOff.style.display = g_isMSIE ? "inline" : "block";
+						EnableSound(false);
+					} else {
+						oCurOff.style.display = "none";
+						oCurOn.style.display = g_isMSIE ? "inline" : "block";
+						EnableSound(true);
+					}
+					return true;
+				}]]>
+			</body>
+		</method>
+		<method name="GetProperty" label="_GetProperty" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[function GetProperty(argobj)
+				{
+					if(argobj.pid==null || argobj.property==null) return false;
+					var oCurObj = document.getElementById(argobj.pid);
+					if(oCurObj==null) return false;
+					var oCurOff = document.getElementById(argobj.pid+"_sound_off");
+					switch(argobj.property.toLowerCase()) {
+						case "soundon":	g_vPropertyValue = oCurOff.style.display=="none" ? "1" : "0";	break;
+						default: return true;
+					}
+					return true;
+				}]]>
+			</body>
+		</method>
+		<method name="Over" label="_Over" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[function Over(argobj)
+				{
+					if(argobj.pid==null || argobj.btn==null || argobj.rep==null) return false;
+					var oButton = argobj.btn;
+					var oReplace = document.getElementById(argobj.pid + argobj.rep);
+					if(oButton==null || oReplace==null) return false;
+					oButton.src = oReplace.src;
+					PlayObjectSound({ pid: argobj.pid, snd: "over" });
+					return true;
+				}]]>
+			</body>
+		</method>
+		<method name="Out" label="_Out" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[function Out(argobj)
+				{
+					if(argobj.pid==null || argobj.btn==null || argobj.rep==null) return false;
+					var oButton = argobj.btn;
+					var oReplace = document.getElementById(argobj.pid + argobj.rep);
+					if(oButton==null || oReplace==null) return false;
+					oButton.src = oReplace.src;
+					return true;
+				}]]>
+			</body>
+		</method>
+		<method name="Click" label="_Click" access="private">
+			<params>
+			</params>
+			<body>
+				<![CDATA[function Click(argobj)
+				{
+					if(argobj.pid==null) return false;
+					CallMethod("nav_011_sound", "toggleSound", { pid: argobj.pid });
+					return true;
+				}]]>
+			</body>
+		</method>
+	</methods>
+</params>
