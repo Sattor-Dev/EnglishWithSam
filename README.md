@@ -12,3 +12,14 @@ This is English language course. The course includes four sections:
      <img src="https://user-images.githubusercontent.com/106261886/184066631-c06cc89b-28fb-4e7a-9df0-b9f326edddd9.PNG" alt="second" width="500">
 </div>
 
+## Initial steps for working with 'EnglishWithSam' course files are described below:
+### Step 1
+     Download archive with course files
+### Step 2
+     Extract the archive to specific folder
+### Step 3
+     Enter to images folder and run setup.cmd file
+### Step 4
+     The project file (English course Sam.wcl) is located in main folder that allows to make modifiction
+     
+It is possible to download an executable file from relase page in order to run the course.
